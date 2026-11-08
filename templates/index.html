@@ -334,6 +334,41 @@
             margin-bottom: 24px;
         }
 
+        /* Admin panel layout: stable two-column work area on desktop, one column on mobile. */
+        .admin-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start;
+            gap: 18px;
+        }
+        .admin-grid > .card { min-width: 0; }
+        .admin-wide { grid-column: 1 / -1 !important; }
+        .admin-grid .multiplier-input {
+            width: 100%; min-height: 40px; box-sizing: border-box;
+            padding: 9px 11px; border: 1px solid rgba(148,163,184,.28);
+            border-radius: 8px; background: rgba(15,23,42,.82);
+            color: #e2e8f0; font-size: 13px; font-weight: 500;
+            text-align: left; outline: none;
+        }
+        .admin-grid .multiplier-input:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(59,130,246,.16); }
+        .admin-grid select.multiplier-input { appearance: auto; cursor: pointer; }
+        .admin-grid select.multiplier-input option { background: #0f172a; color: #e2e8f0; }
+        .admin-grid textarea.multiplier-input { resize: vertical; line-height: 1.4; }
+        .admin-grid input[type="checkbox"] { accent-color: #3b82f6; width: 16px; height: 16px; vertical-align: middle; }
+        .admin-intro {
+            display:flex; justify-content:space-between; align-items:flex-start; gap:18px;
+            padding:20px 22px; margin-bottom:18px;
+            background:linear-gradient(120deg, rgba(30,64,175,.24), rgba(15,23,42,.72));
+            border:1px solid rgba(96,165,250,.22); border-radius:16px;
+        }
+        .admin-intro h2 { margin:0 0 6px; font-size:22px; color:#f8fafc; }
+        .admin-intro p { margin:0; color:#94a3b8; font-size:12px; line-height:1.5; }
+        .admin-card-kicker { color:#64748b; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; margin:-12px 0 14px; }
+        @media (max-width: 900px) {
+            .admin-grid { grid-template-columns: 1fr; }
+            .admin-wide { grid-column: auto !important; }
+            .admin-intro { flex-direction:column; }
+        }
+
         .stat-card {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -431,6 +466,73 @@
         tr:hover td {
             background: rgba(255, 255, 255, 0.02);
         }
+
+        .journal-table-wrap {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            direction: ltr;
+            scrollbar-gutter: stable;
+        }
+        .journal-table {
+            min-width: 1120px;
+            margin-top: 8px;
+        }
+        .journal-table th, .journal-table td {
+            padding: 9px 10px;
+            white-space: nowrap;
+            vertical-align: top;
+        }
+        .journal-table td:last-child {
+            white-space: normal;
+            min-width: 230px;
+        }
+        .trend-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .trend-summary-item {
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 10px;
+            background: rgba(2,6,23,.28);
+        }
+        .trend-summary-item label {
+            display:block; font-size:10px; color:#64748b; text-transform:uppercase;
+            letter-spacing:.04em; margin-bottom:5px;
+        }
+        .trend-calendar-legend { display:flex; flex-wrap:wrap; gap:8px 16px; color:#cbd5e1; font-size:11px; margin:12px 0; }
+        .trend-calendar-legend span { white-space:nowrap; }
+        .trend-calendar-swatch { display:inline-block; width:11px; height:11px; border-radius:3px; vertical-align:-1px; margin-right:5px; }
+        .trend-calendar-swatch.bullish { background:#10b981; }
+        .trend-calendar-swatch.bearish { background:#ef4444; }
+        .trend-calendar-swatch.neutral { background:#64748b; }
+        .trend-calendar-swatch.potential { border:2px dashed #f59e0b; }
+        .trend-calendar-swatch.no-record { background:repeating-linear-gradient(135deg,#263349 0 3px,#101827 3px 6px); }
+        .trend-calendar { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr)); gap:14px; margin-bottom:14px; }
+        .trend-calendar-month { background:rgba(2,6,23,.3); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:12px; min-width:0; }
+        .trend-calendar-month h3 { margin:0 0 10px; color:#e2e8f0; font-size:12px; font-weight:800; }
+        .trend-calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; }
+        .trend-calendar-weekday { color:#94a3b8; text-align:center; font-size:10px; font-weight:800; padding:3px 0; }
+        .trend-calendar-day { width:100%; min-height:49px; padding:4px 2px; border:1px solid transparent; border-radius:7px; background:#1e293b; color:#f8fafc; text-align:center; font-size:10px; font-weight:800; position:relative; }
+        .trend-calendar-day small { display:block; font-size:8px; letter-spacing:.02em; font-weight:700; margin-top:3px; }
+        .trend-calendar-day.bullish { background:#10b981; color:#031910; }
+        .trend-calendar-day.bearish { background:#ef4444; color:#fff; }
+        .trend-calendar-day.neutral { background:#64748b; color:#fff; }
+        .trend-calendar-day.potential { background:rgba(245,158,11,.1); border:2px dashed #f59e0b; color:#fbbf24; }
+        .trend-calendar-day.no-record { background:repeating-linear-gradient(135deg,#263349 0 4px,#101827 4px 8px); color:#94a3b8; }
+        .trend-calendar-day.weekend { background:transparent; color:#64748b; }
+        .trend-calendar-day.outside { visibility:hidden; }
+        .trend-calendar-day.change::before { content:'↕'; position:absolute; top:3px; right:5px; font-size:11px; }
+        .trend-calendar-day.latest { box-shadow:0 0 0 2px #f8fafc; }
+        .trend-calendar-day.selected { outline:2px solid #3b82f6; outline-offset:3px; }
+        button.trend-calendar-day { cursor:pointer; }
+        button.trend-calendar-day:hover, button.trend-calendar-day:focus-visible { outline:2px solid #60a5fa; outline-offset:2px; }
+        .trend-calendar-help { font-size:11px; color:#94a3b8; margin:0 0 12px; }
+        .journal-selected-row td { background:rgba(59,130,246,.14); }
 
         /* UI Badges */
         .badge {
@@ -629,6 +731,7 @@
                 overflow-x: auto;
                 white-space: nowrap;
             }
+            .trend-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
             .btn {
                 padding: 10px 16px;
@@ -847,21 +950,6 @@
                     </div>
                 </div>
 
-                <button id="modeToggle" class="btn btn-secondary" onclick="toggleMode()"
-                    style="display: none!important;">
-                    Mode: MANUAL
-                </button>
-
-                <!-- INSTRUMENT SELECTOR -->
-                <div style="display: flex; align-items: center; gap: 6px; margin-right: 8px;">
-                    <label for="instrumentSelector"
-                        style="font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">INSTRUMENT</label>
-                    <select id="instrumentSelector" onchange="onInstrumentChange(this.value)"
-                        style="background: #1e293b; color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 700; cursor: pointer; outline: none; min-width: 160px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%2360a5fa\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 8px center; background-size: 16px; padding-right: 28px;">
-                        <option value="NATGASMINI">🔥 Natural Gas</option>
-                    </select>
-                </div>
-
                 <!-- ON-DEMAND REFRESH CONTROLS -->
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div id="lastUpdatedLabel" style="font-size: 10px; color: #64748b; text-align: right;">
@@ -909,11 +997,9 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab" onclick="window.location.href='/simulator'">📊 Simulator</button>
             <button class="tab" onclick="switchTab('master-console')">🚀 Master Order Console</button>
             <button class="tab" onclick="switchTab('adjustments')">⚙️ Adjustments</button>
-            <button class="tab" onclick="switchTab('positions')">📈 Positions Analyzer</button>
-            <button class="tab" onclick="switchTab('profile')">🛡️ User & Risk Profile</button>
-            <button class="tab" onclick="switchTab('simulator')" style="color: #a78bfa;">📊 P&L Simulator</button>
             <button class="tab" onclick="switchTab('admin')" style="color: #fb7185;">⚙️ Admin Panel</button>
         </div>
 
@@ -1155,86 +1241,37 @@
                 <!-- Content will be dynamically injected by refreshData() -->
                 <div style="text-align: center; padding: 40px; color: #64748b;">
                     <div style="font-size: 36px; margin-bottom: 16px; opacity: 0.5;">🔄</div>
-                    <div style="font-size: 16px; font-weight: 600;">Click "Refresh Data" to Load Recommendations</div>
+                    <div style="font-size: 16px; font-weight: 600;">Waiting for the latest strategy state</div>
                     <div style="font-size: 12px; margin-top: 8px; color: #475569;">
-                        Position recommendations load on-demand to save API quota
+                        Use Refresh Data when you want to fetch new market candles and premiums
                     </div>
                 </div>
+            </div>
+
+            <div class="card" id="adaptiveStrategyGuide" style="margin-bottom:24px; border:1px solid rgba(96,165,250,0.3);">
+                <div class="card-title">🧭 Adaptive MCX Natural Gas Strategy Guide</div>
+                <div id="adaptiveStrategyStatus" style="padding:10px 12px; margin-bottom:14px; border-radius:8px; background:rgba(148,163,184,0.1); color:#cbd5e1; font-size:13px;">
+                    Reading the latest completed-candle signal…
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    <div style="padding:14px;border-radius:8px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);">
+                        <div style="font-weight:800;color:#10b981;margin-bottom:7px;">Strategy 1 · Trending</div>
+                        <div style="font-size:12px;color:#cbd5e1;line-height:1.55;">Bullish: buy ITM PE hedge 12, buy futures 6, buy ITM CE 6, sell ATM CE 4, sell ATM PE 4.</div>
+                        <div style="font-size:12px;color:#cbd5e1;line-height:1.55;margin-top:5px;">Bearish: buy ITM CE hedge 12, sell futures 6, buy protective ITM PE 6, sell ATM CE 4, sell ATM PE 4.</div>
+                    </div>
+                    <div style="padding:14px;border-radius:8px;background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.18);">
+                        <div style="font-weight:800;color:#60a5fa;margin-bottom:7px;">Strategy 2 · Consolidation</div>
+                        <div style="font-size:12px;color:#cbd5e1;line-height:1.55;">Sell ATM CE and PE 10 each. Buy 10-lot hedges at S − (CE+PE premium) and S + (CE+PE premium), rounded to valid strikes.</div>
+                    </div>
+                </div>
+                <div id="activeBasketSummary" style="margin-top:14px;font-size:12px;color:#94a3b8;">Active basket: none. A basket appears after a confirmed signal and validation.</div>
             </div>
 
             <!-- Active Instruments Table Removed -->
         </div>
 
         <!-- Master Order Console Tab - Live Orders from Fyers -->
-        <div id="tab-master-console" class="tab-content">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div class="card-title" style="margin-bottom: 0;">📋 Live Orders from Fyers</div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 12px; color: #64748b;">Total: <span id="liveOrdersCount"
-                                style="color: #60a5fa; font-weight: 700;">0</span></span>
-                        <button class="btn btn-secondary" onclick="loadLiveOrders()"
-                            style="padding: 6px 12px; font-size: 12px;">
-                            🔄 Refresh
-                        </button>
-                    </div>
-                </div>
 
-                <table class="table" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th style="width: 80px;">ORDER ID</th>
-                            <th>SYMBOL</th>
-                            <th>SIDE</th>
-                            <th>QTY</th>
-                            <th>PRICE</th>
-                            <th>STATUS</th>
-                            <th>TIME</th>
-                        </tr>
-                    </thead>
-                    <tbody id="liveOrdersBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: #64748b; padding: 30px;">Loading orders...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Live Positions Section -->
-            <div class="card" style="margin-top: 24px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <div class="card-title" style="margin-bottom: 0;">📈 Live Positions</div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span style="font-size: 12px; color: #64748b;">Total P&L: <span id="totalPnl"
-                                style="font-weight: 700;">₹0.00</span></span>
-                        <button class="btn btn-secondary" onclick="loadLivePositions()"
-                            style="padding: 6px 12px; font-size: 12px;">
-                            🔄 Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <table class="table" style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>SYMBOL</th>
-                            <th>SIDE</th>
-                            <th>QTY</th>
-                            <th>AVG PRICE</th>
-                            <th>LTP</th>
-                            <th>P&L</th>
-                        </tr>
-                    </thead>
-                    <tbody id="livePositionsBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">Loading
-                                positions...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
 
         <!-- Adjustments Tab -->
@@ -1338,6 +1375,88 @@
 
         <!-- Master Order Console Tab -->
         <div id="tab-master-console" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div class="card-title" style="margin-bottom: 0;">📋 Live Orders from Fyers</div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 12px; color: #64748b;">Total: <span id="liveOrdersCount"
+                                style="color: #60a5fa; font-weight: 700;">0</span></span>
+                        <button class="btn btn-secondary" onclick="loadLiveOrders()"
+                            style="padding: 6px 12px; font-size: 12px;">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">ORDER ID</th>
+                            <th>SYMBOL</th>
+                            <th>SIDE</th>
+                            <th>QTY</th>
+                            <th>PRICE</th>
+                            <th>STATUS</th>
+                            <th>TIME</th>
+                        </tr>
+                    </thead>
+                    <tbody id="liveOrdersBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #64748b; padding: 30px;">Loading orders...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Live Positions Section -->
+            <div class="card" style="margin-top: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div class="card-title" style="margin-bottom: 0;">📈 Live Positions</div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 12px; color: #64748b;">Total P&L: <span id="totalPnl"
+                                style="font-weight: 700;">₹0.00</span></span>
+                        <button class="btn btn-secondary" onclick="loadLivePositions()"
+                            style="padding: 6px 12px; font-size: 12px;">
+                            🔄 Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>SYMBOL</th>
+                            <th>SIDE</th>
+                            <th>QTY</th>
+                            <th>AVG PRICE</th>
+                            <th>LTP</th>
+                            <th>P&L</th>
+                        </tr>
+                    </thead>
+                    <tbody id="livePositionsBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">Loading
+                                positions...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin-bottom:24px;border-color:rgba(96,165,250,.35);background:linear-gradient(135deg,rgba(30,41,59,.75),rgba(15,23,42,.7));">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+                    <div><div style="font-size:11px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:.08em;">Current Decision</div><div id="journalDecisionTrend" style="font-size:30px;font-weight:800;color:#cbd5e1;margin-top:4px;">WAITING FOR SCAN</div><div id="journalDecisionReason" style="font-size:12px;color:#94a3b8;margin-top:6px;">Run a historical scan or refresh strategy data.</div></div>
+                    <div id="journalDecisionAction" class="badge badge-neutral" style="font-size:14px;padding:10px 14px;">WAIT / NO TRADE</div>
+                </div>
+                <div class="trend-summary-grid" style="margin-bottom:0;">
+                    <div class="trend-summary-item"><label>Persisted since</label><strong id="journalPersistedSince">-</strong></div>
+                    <div class="trend-summary-item"><label>Confidence</label><strong id="journalDecisionConfidence">-</strong></div>
+                    <div class="trend-summary-item"><label>Strategy basket</label><strong id="journalDecisionBasket">-</strong></div>
+                    <div class="trend-summary-item"><label>Latest confirmation</label><strong id="journalLatestConfirmation">-</strong></div>
+                    <div class="trend-summary-item"><label>Data quality</label><strong id="journalDataQuality">Waiting</strong></div>
+                </div>
+            </div>
+
             <!-- Summary Header -->
             <div class="card"
                 style="padding: 16px 24px; margin-bottom: 24px; background: rgba(30, 41, 59, 0.4); border-color: rgba(59, 130, 246, 0.3);">
@@ -1359,8 +1478,6 @@
                     <div style="display: flex; gap: 12px;">
                         <button class="btn btn-secondary" onclick="pollMasterConsole()" style="padding: 8px 16px;">🔄
                             REFRESH CONSOLE</button>
-                        <button class="btn btn-primary" onclick="openCreateBasketModal()" style="padding: 8px 16px;">➕
-                            NEW MANUAL BASKET</button>
                     </div>
                 </div>
             </div>
@@ -1417,385 +1534,61 @@
                 <div style="text-align: center; color: #64748b; padding: 100px 0;">
                     <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.3;">📋</div>
                     <div style="font-size: 18px; font-weight: 600;">System Ready</div>
-                    <p style="margin-top: 8px; opacity: 0.6;">Awaiting signal or manual basket creation...</p>
+                    <p style="margin-top: 8px; opacity: 0.6;">Awaiting a strategy signal or approved order intent...</p>
                 </div>
+            </div>
+
+            <div class="card" style="margin-top:24px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px;flex-wrap:wrap;">
+                    <div class="card-title" style="margin:0;">🧾 Strategy Event Journal</div>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                        <select id="journalSymbol" class="input-minimal" style="width:130px"><option value="NATGASMINI">NATGASMINI</option></select>
+                        <select id="journalDays" class="input-minimal" style="width:90px"><option value="5">5 days</option><option value="10">10 days</option><option value="20" selected>20 days</option><option value="60">60 days</option></select>
+                        <select id="journalExpiry" class="input-minimal" style="width:145px"><option value="AUTO">AUTO · latest shared</option><option value="26NOV">26NOV</option><option value="26DEC">26DEC</option><option value="27JAN">27JAN</option></select>
+                        <span title="Only completed daily candles are scanned" style="font-size:11px;color:#94a3b8;white-space:nowrap;">✓ COMPLETED CANDLES</span>
+                        <button class="btn btn-primary" style="padding:5px 10px;font-size:11px;" onclick="runTwentyDayScan(this)">🔎 RUN SCAN</button><button class="btn btn-secondary" style="padding:5px 10px;font-size:11px;" onclick="pollStrategyEvents();pollStrategyScans()">REFRESH</button>
+                    </div>
+                </div>
+                <div style="font-size:11px;color:#94a3b8;margin-bottom:10px;">Trend analyses, MA9 confirmations, trend changes, and saved simulations are recorded here.</div>
+                <div id="journalSummary" class="trend-summary-grid"></div>
+                <div class="trend-calendar-legend" aria-label="Calendar legend">
+                    <span><i class="trend-calendar-swatch bullish"></i>Bullish ↑</span>
+                    <span><i class="trend-calendar-swatch bearish"></i>Bearish ↓</span>
+                    <span><i class="trend-calendar-swatch neutral"></i>Neutral —</span>
+                    <span><i class="trend-calendar-swatch potential"></i>Potential, unconfirmed</span>
+                    <span><i class="trend-calendar-swatch no-record"></i>No saved record</span>
+                    <span>↕ Confirmed change · White ring: latest · Blue ring: selected</span>
+                </div>
+                <div id="trendTimeline" class="trend-calendar" aria-label="Completed candle trend calendar"><span style="color:#94a3b8;font-size:11px;">Run a scan to build the trend calendar.</span></div>
+                <div id="trendCalendarSelection" class="trend-calendar-help">Select a dated tile to find its saved signal in the journal below. Dates use IST.</div>
+                <div class="journal-table-wrap"><table class="journal-table" style="font-size:11px;"><thead><tr><th>CANDLE (IST)</th><th>SAVED (IST)</th><th>SCAN</th><th>#</th><th>EVENT</th><th>FINAL</th><th>RAW</th><th>SIGNAL</th><th>FUTURES</th><th>DETAILS</th></tr></thead><tbody id="strategyEventBody"><tr><td colspan="10" style="text-align:center;color:#64748b;padding:20px;">No events recorded yet.</td></tr></tbody></table></div>
+                <div style="font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;margin:18px 0 8px;">Saved scans</div>
+                <div class="journal-table-wrap"><table class="journal-table" style="font-size:11px;"><thead><tr><th>SCAN</th><th>CREATED (IST)</th><th>STATUS</th><th>WINDOW</th><th>RECORDS</th><th>BULLISH</th><th>BEARISH</th><th>NEUTRAL</th><th>CHANGES</th><th>MESSAGE</th></tr></thead><tbody id="strategyScanBody"><tr><td colspan="10" style="text-align:center;color:#64748b;padding:20px;">No scans run yet.</td></tr></tbody></table></div>
             </div>
         </div>
 
         <!-- User & Risk Profile Tab -->
-        <div id="tab-profile" class="tab-content">
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 24px;">
-                <!-- Identity Verification -->
-                <div class="card">
-                    <div class="card-title">👤 Identity Verification</div>
-                    <div style="display: flex; align-items: center; gap: 20px; margin-top: 20px;">
-                        <div
-                            style="width: 60px; height: 60px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                            👨‍💻</div>
-                        <div style="flex-grow: 1;">
-                            <div style="font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 4px;">LOGIN ID
-                            </div>
-                            <div id="profLoginId" style="font-size: 16px; font-weight: 600;">-</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 4px;">SESSION
-                            </div>
-                            <span id="profSession" class="badge badge-bullish">ACTIVE</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Strategy Lock -->
-                <div class="card">
-                    <div class="card-title">🔒 Strategy Lock</div>
-                    <div style="text-align: center; padding: 10px 0;">
-                        <div style="font-size: 40px; margin-bottom: 12px; color: #60a5fa;">🛡️</div>
-                        <div style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: 700;">
-                            ACTIVE STRATEGY</div>
-                        <div id="profStratName" style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">-</div>
-                        <span id="profLockStatus" class="badge badge-bearish">LOCKED BY EXECUTION</span>
-                    </div>
-                </div>
-
-                <!-- Hard-Coded Risk Limits -->
-                <div class="card">
-                    <div class="card-title">⚠️ Hard-Coded Risk Limits</div>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
-                        <div>
-                            <div style="font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 6px;">MAX
-                                FUTURES LIMIT</div>
-                            <div id="profMaxFut" style="font-size: 24px; font-weight: 700;">-</div>
-                            <div style="height: 4px; background: #ef4444; margin-top: 4px; border-radius: 2px;"></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 6px;">MAX
-                                ADJUSTMENTS / DAY</div>
-                            <div id="profMaxAdj" style="font-size: 24px; font-weight: 700;">-</div>
-                            <div style="height: 4px; background: #fbbf24; margin-top: 4px; border-radius: 2px;"></div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <div style="font-size: 11px; color: #64748b; font-weight: 700;">COMPLIANCE STATUS</div>
-                        <div id="profRiskStatus" style="color: #10b981; font-weight: 700; font-size: 14px;">WITHIN
-                            LIMITS</div>
-                    </div>
-                </div>
-
-                <!-- Security & Auth -->
-                <div class="card">
-                    <div class="card-title">🔐 Security & Authentication</div>
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label style="font-size: 11px; font-weight: 700; color: #64748b;">CHANGE PASSWORD</label>
-                            <input type="password" class="input-minimal" value=".........." disabled
-                                style="width: 100%; margin-top: 4px;">
-                            <button class="btn btn-secondary" style="margin-top: 8px; width: 100%; font-size: 11px;"
-                                disabled>Update Password</button>
-                        </div>
-                        <div>
-                            <label style="font-size: 11px; font-weight: 700; color: #64748b;">EMAIL
-                                AUTHENTICATION</label>
-                            <div style="font-size: 11px; color: #94a3b8; margin: 4px 0 8px;">Link email for
-                                notifications and recovery.</div>
-                            <input type="email" class="input-minimal" placeholder="name@example.com"
-                                style="width: 100%;">
-                            <button class="btn btn-secondary" style="margin-top: 8px; font-size: 11px;">Save
-                                Email</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Position Analyzer Tab (READ-ONLY) -->
-        <div id="tab-positions" class="tab-content">
-            <!-- Positions Header with READ-ONLY indicator -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <span style="font-size: 20px; font-weight: 800; color: #f8fafc;">📊 Positions Analyzer</span>
-                    <span class="badge badge-neutral" style="font-size: 10px; padding: 4px 8px;">READ-ONLY</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <div style="text-align: right;">
-                        <div style="font-size: 10px; font-weight: 700; color: #64748b;">MARGIN USED</div>
-                        <div id="posMarginUsed" style="font-size: 14px; font-weight: 700; color: #fbbf24;">₹0.00
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 10px; font-weight: 700; color: #64748b;">MARGIN FREE</div>
-                        <div id="posMarginFree" style="font-size: 14px; font-weight: 700; color: #10b981;">₹0.00
-                        </div>
-                    </div>
-                    <span style="font-size: 11px; color: #64748b;">🔄 Auto-refresh: 5s</span>
-                </div>
-            </div>
 
-            <!-- Health Metrics Bar [NEW] -->
-            <div class="card"
-                style="padding: 16px 24px; margin-bottom: 24px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.02);">
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
-                    <div>
-                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                            NET
-                            DELTA EXPOSURE</div>
-                        <div id="posNetDelta"
-                            style="font-size: 22px; font-weight: 800; color: #f8fafc; margin-top: 4px;">0.00</div>
-                        <div id="posDeltaStatus"
-                            style="font-size: 11px; font-weight: 600; color: #10b981; margin-top: 2px;">NEUTRAL
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                            HEDGE
-                            COVERAGE %</div>
-                        <div id="posHedgeCoverage"
-                            style="font-size: 22px; font-weight: 800; color: #f8fafc; margin-top: 4px;">0.0%</div>
-                        <div class="progress-bar" style="height: 6px; margin-top: 8px;">
-                            <div id="posHedgeFill" class="progress-fill" style="width: 0%; background: #10b981;">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                            NET
-                            PREMIUM (INR)</div>
-                        <div id="posNetPremium"
-                            style="font-size: 22px; font-weight: 800; color: #f8fafc; margin-top: 4px;">₹0</div>
-                        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Collected from options</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                            RISK
-                            STATUS</div>
-                        <div id="posRiskStatus"
-                            style="font-size: 20px; font-weight: 800; color: #10b981; margin-top: 4px;">COMPLIANT
-                        </div>
-                        <div id="posAlertCount" style="font-size: 11px; color: #64748b; margin-top: 2px;">0 Active
-                            Alerts</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Risk Alerts Section [NEW] -->
-            <div id="posRiskAlerts" style="display: none; margin-bottom: 24px;">
-                <!-- Alerts will be injected here -->
-            </div>
-
-            <div class="grid">
-                <!-- MTM Breakdown Card -->
-                <div class="card" style="grid-column: span 2;">
-                    <div class="card-title">Live MTM Breakdown</div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px;">
-                        <div
-                            style="background: rgba(37, 99, 235, 0.05); padding: 16px; border-radius: 16px; border: 1px solid rgba(37, 99, 235, 0.1);">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                FUTURES MTM</div>
-                            <div id="mtmFutures"
-                                style="font-size: 20px; font-weight: 800; color: #f8fafc; margin-top: 8px;">₹0.00
-                            </div>
-                        </div>
-                        <div
-                            style="background: rgba(16, 185, 129, 0.05); padding: 16px; border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.1);">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                HEDGE (OPT) MTM</div>
-                            <div id="mtmHedge"
-                                style="font-size: 20px; font-weight: 800; color: #f8fafc; margin-top: 8px;">
-                                ₹0.00</div>
-                        </div>
-                        <div
-                            style="background: rgba(139, 92, 246, 0.05); padding: 16px; border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.1);">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                IRON FLY MTM</div>
-                            <div id="mtmIronFly"
-                                style="font-size: 20px; font-weight: 800; color: #f8fafc; margin-top: 8px;">₹0.00
-                            </div>
-                        </div>
-                        <div
-                            style="background: rgba(15, 23, 42, 0.4); padding: 16px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
-                            <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">
-                                NET SESSION P&L</div>
-                            <div id="mtmNet"
-                                style="font-size: 20px; font-weight: 800; color: #f8fafc; margin-top: 8px;">
-                                ₹0.00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payoff / Scenario Card -->
-                <div class="card">
-                    <div class="card-title">Expiry Payoff Projections</div>
-                    <div style="margin-top: 16px;">
-                        <div
-                            style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; margin-bottom: 12px;">
-                            <div
-                                style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
-                                "DO NOTHING" SCENARIO</div>
-                            <div style="font-size: 13px; color: #e2e8f0;">If price stays at <span id="projPrice"
-                                    style="font-weight: 700; color: #60a5fa;">---</span> till expiry:</div>
-                            <div id="projPnl"
-                                style="font-size: 18px; font-weight: 800; color: #10b981; margin-top: 6px;">
-                                ₹0.00
-                                Estimated</div>
-                        </div>
-                        <div style="font-size: 11px; color: #64748b; line-height: 1.5;">
-                            📌 <span style="font-weight: 600;">Risk Flattening Zone:</span> <span id="flattenZone">--- -
-                                ---</span><br>
-                            📌 <span style="font-weight: 600;">Worst Case Scenario:</span> <span id="worstPnl"
-                                style="color: #fb7185;">₹0.00</span> (Hedge Protected)
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="margin-top: 24px;">
-                <div class="card-title">Detailed Leg Inventory</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Instrument</th>
-                            <th>Category</th>
-                            <th>Side</th>
-                            <th>Qty</th>
-                            <th>Avg Price</th>
-                            <th>LTP</th>
-                            <th>Live MTM</th>
-                        </tr>
-                    </thead>
-                    <tbody id="positionsBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: #64748b; padding: 40px;">No open
-                                positions
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 
 
     <!-- User & Risk Profile Tab [NEW] -->
-    <div id="tab-profile" class="tab-content">
-        <div class="grid">
-            <!-- Basic Identity -->
-            <div class="card">
-                <div class="card-title">👤 Identity Verification</div>
-                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
-                    <div
-                        style="background: rgba(255,255,255,0.05); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                        👨‍💻</div>
-                    <div>
-                        <div id="profName" style="font-size: 18px; font-weight: 700; color: #f8fafc;">-</div>
-                        <div id="profRole"
-                            style="font-size: 12px; color: #60a5fa; font-weight: 600; text-transform: uppercase;">-
-                        </div>
-                    </div>
-                </div>
-                <table style="margin-top: 0;">
-                    <tr>
-                        <td style="color: #64748b; font-size: 12px;">LOGIN ID</td>
-                        <td id="profLogin" style="text-align: right; font-family: monospace;">-</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #64748b; font-size: 12px;">SESSION</td>
-                        <td style="text-align: right;"><span class="badge badge-bullish">Active</span></td>
-                    </tr>
-                </table>
-            </div>
 
-            <!-- Strategy Lock -->
-            <div class="card">
-                <div class="card-title">🔒 Strategy Lock</div>
-                <div style="text-align: center; padding: 10px;">
-                    <span style="font-size: 40px; display: block; margin-bottom: 10px;">🛡️</span>
-                    <div style="font-size: 12px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">
-                        ACTIVE
-                        STRATEGY</div>
-                    <div id="profStrategy"
-                        style="font-size: 16px; font-weight: 800; color: #f8fafc; margin-bottom: 8px;">-</div>
-                    <div class="badge badge-bearish" style="display: inline-block;">LOCKED By Fund Mandate</div>
-                </div>
-            </div>
-
-            <!-- Security Credentials -->
-            <div class="card" style="grid-column: span 2;">
-                <div class="card-title">🔐 Security & Authentication</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                    <div>
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 12px; letter-spacing: 0.05em;">
-                            CHANGE PASSWORD</div>
-                        <input type="password" id="cpCurrent" placeholder="Current Password"
-                            style="width:100%; padding: 8px; margin-bottom: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                        <input type="password" id="cpNew" placeholder="New Password"
-                            style="width:100%; padding: 8px; margin-bottom: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                        <button class="btn btn-secondary" onclick="changeUserPassword()">Update Password</button>
-                    </div>
-                    <div>
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 12px; letter-spacing: 0.05em;">
-                            EMAIL AUTHENTICATION</div>
-                        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px;">Link email for
-                            notifications
-                            and recovery.</div>
-                        <input type="email" id="upEmail" placeholder="name@example.com"
-                            style="width:100%; padding: 8px; margin-bottom: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                        <button class="btn btn-secondary" onclick="updateUserEmail()">Save Email</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Risk Limits -->
-            <div class="card" style="grid-column: span 2;">
-                <div class="card-title">⚠️ Hard-Coded Risk Limits</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                    <div>
-                        <div class="stat-label">Max Futures Limit</div>
-                        <div id="profMaxFut" style="font-size: 20px; font-weight: 800;">5 LOTS</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 100%; background: #ef4444;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="stat-label">Max Adjustments / Day</div>
-                        <div id="profMaxAdj" style="font-size: 20px; font-weight: 800;">1</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 100%; background: #facc15;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="stat-label">Compliance Status</div>
-                        <div id="profRiskStatus" style="font-size: 20px; font-weight: 800; color: #10b981;">WITHIN
-                            LIMITS</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Permissions -->
-            <div class="card" style="grid-column: span 2;">
-                <div class="card-title">🔐 Action Permissions</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody id="profPermBody">
-                        <!-- JS Injected -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
     <!-- Admin Control Panel Tab [NEW] -->
     <div id="tab-admin" class="tab-content">
-        <div class="grid">
+        <div class="admin-intro">
+            <div><h2>Admin Control Center</h2><p>Manage broker session, strategy selection, risk limits, emergency actions, and audit history from one place.</p></div>
+            <div class="badge badge-bullish" style="white-space:nowrap">ADMIN ONLY · LIVE CONTROLS</div>
+        </div>
+        <div class="grid admin-grid">
             <!-- 1. System Status & Mode -->
             <div class="card">
                 <div class="card-title">🖥️ System Status (Master View)</div>
+                <div class="admin-card-kicker">Connection and operating state</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
                     <div class="key-value">
                         <span>System Mode</span>
@@ -1820,123 +1613,116 @@
                         <span id="admLastCandle" style="font-family: monospace; color: #fbbf24;">Waiting...</span>
                     </div>
                 </div>
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <label style="font-size: 12px; color: #94a3b8;">Set System Mode:</label>
-                    <div style="display: flex; gap: 8px; margin-top: 5px;">
-                        <button class="btn btn-secondary" onclick="adminSetMode('LIVE')">LIVE</button>
-                        <button class="btn btn-secondary" onclick="adminSetMode('PAPER')">PAPER</button>
-                        <button class="btn btn-secondary" onclick="adminSetMode('MAINTENANCE')">MAINTENANCE</button>
-                    </div>
-                </div>
             </div>
 
             <!-- [NEW] Alert Channels Config -->
             <div class="card">
                 <div class="card-title">📢 Alert Channels</div>
+                <div class="admin-card-kicker">Signal source and entry filters</div>
                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 13px; color: #cbd5e1;">UI Popups</span>
-                        <label class="switch">
-                            <input type="checkbox" id="chkUiPopup" checked onchange="toggleChannel('popup')">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 13px; color: #cbd5e1;">Sound Notifications</span>
-                        <label class="switch">
-                            <input type="checkbox" id="chkSound" onchange="toggleChannel('sound')">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 13px; color: #cbd5e1;">Telegram Bot</span>
-                        <label class="switch">
-                            <input type="checkbox" id="chkTelegram" onchange="toggleChannel('telegram')">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div style="font-size: 10px; color: #64748b; margin-top: 5px;">* Telegram integration requires
-                        API
-                        Key</div>
+                    <label style="display:flex;justify-content:space-between;align-items:center;color:#fbbf24;">News / Event Risk (block new entries)
+                        <input type="checkbox" id="chkNewsRisk" onchange="setNewsRiskToggle(this.checked)">
+                    </label>
+                    <label for="activeSignalStrategy" style="font-size:12px;color:#cbd5e1;">Strategy selection</label>
+                    <select id="activeSignalStrategy" class="multiplier-input" onchange="setActiveSignalStrategy(this.value)">
+                        <option value="AUTO">Adaptive · Select from confirmed trend/range</option>
+                        <option value="STRATEGY_1">Strategy 1 · Trending markets</option>
+                        <option value="STRATEGY_2">Strategy 2 · Consolidation markets</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- [NEW] Broker Credentials (Headless Login) -->
-            <div class="card" style="grid-column: span 2;">
-                <div class="card-title">🔐 Broker Credentials (Headless Auto-Login)</div>
-
-                <!-- Status Indicator -->
-                <div id="credentialStatus"
-                    style="padding: 12px; border-radius: 6px; margin-bottom: 16px; display: none;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span id="credStatusIcon" style="font-size: 18px;"></span>
-                        <span id="credStatusText" style="font-weight: 500;"></span>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 6px;">App ID
-                            (Client ID)</label>
-                        <input type="text" id="credAppId" placeholder="e.g. GV...-100"
-                            style="width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                    </div>
-                    <div>
-                        <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 6px;">App
-                            Secret
-                            (Secret ID)</label>
-                        <input type="password" id="credSecretId" placeholder="e.g. M...K"
-                            style="width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                    </div>
-                    <div>
-                        <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 6px;">Fyers
-                            Login
-                            ID</label>
-                        <input type="text" id="credFyersId" placeholder="e.g. AB1234"
-                            style="width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                    </div>
-                    <div>
-                        <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 6px;">4-Digit
-                            PIN</label>
-                        <input type="password" id="credPin" placeholder="****" maxlength="4"
-                            style="width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                    </div>
-                    <div style="grid-column: span 2;">
-                        <label style="color: #cbd5e1; font-size: 12px; display: block; margin-bottom: 6px;">TOTP Key
-                            (Secret)</label>
-                        <input type="password" id="credTotp" placeholder="e.g. JBSWY3DPEHPK3PXP"
-                            style="width: 100%; padding: 8px; background: rgba(0,0,0,0.3); border: 1px solid #334155; color: white; border-radius: 4px;">
-                        <div style="font-size: 10px; color: #64748b; margin-top: 4px;">Provided by Fyers when
-                            enabling
-                            3rd Party Authenticator</div>
-                    </div>
-                </div>
-                <div style="margin-top: 16px; display: flex; gap: 12px; justify-content: flex-end;">
-                    <button class="btn btn-secondary" onclick="saveCredentials()">💾 Save Securely</button>
+            <div class="card admin-wide">
+                <div class="card-title">🔐 Fyers Session</div>
+                <p style="color:#94a3b8;font-size:13px;">Connect through Fyers browser authorization. Tokens are validated before market data is used.</p>
+                <div style="display:flex;gap:12px;justify-content:flex-end;">
                     <button class="btn btn-secondary" onclick="startBrowserLogin()">🔑 Browser Login</button>
-                    <button class="btn btn-primary" onclick="triggerAutoLogin()">🚀 Auto-Login</button>
                     <button class="btn btn-danger" onclick="triggerFyersLogout()">🚪 Logout</button>
                 </div>
             </div>
 
-            <!-- 1.5 Telegram Alerts [NEW] -->
-            <div class="card">
-                <div class="card-title">📣 Telegram Alerts</div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="font-size: 11px; color: #64748b;">Bot Token</div>
-                    <input type="password" id="admTeleToken" class="multiplier-input" style="width: 100%;"
-                        placeholder="123456:ABC-...">
+            <div class="card admin-wide">
+                <div class="card-title">🔐 Fyers Credentials (Existing Auto-Login)</div>
+                <div id="credentialStatus" style="color:#94a3b8;font-size:13px;margin-bottom:10px;">Checking saved credential status…</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <input id="credAppId" class="multiplier-input" placeholder="Fyers App ID">
+                    <input id="credSecret" type="password" class="multiplier-input" placeholder="Fyers App Secret" autocomplete="new-password">
+                    <input id="credFyersId" class="multiplier-input" placeholder="Fyers Login ID">
+                    <input id="credPin" type="password" class="multiplier-input" placeholder="Fyers PIN" autocomplete="new-password">
+                    <input id="credTotp" type="password" class="multiplier-input" placeholder="Fyers TOTP key" autocomplete="new-password">
+                </div>
+                <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;">
+                    <button class="btn btn-secondary" onclick="saveFyersCredentials()">💾 Save Credentials</button>
+                    <button class="btn btn-primary" onclick="triggerFyersAutoLogin()">🚀 Auto-Login</button>
+                </div>
+            </div>
 
-                    <div style="font-size: 11px; color: #64748b; margin-top: 4px;">Chat ID</div>
-                    <input type="text" id="admTeleChatId" class="multiplier-input" style="width: 100%;"
-                        placeholder="987654321">
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-                        <button class="btn btn-primary" onclick="adminSaveTelegram()">Save Config</button>
-                        <button class="btn btn-secondary" onclick="adminTestTelegram()">Test Alert</button>
+            <div class="card admin-wide">
+                <div class="card-title">✉️ Email Notifications</div>
+                <div class="admin-card-kicker">Provider settings are separate from Fyers authentication</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <label><input type="checkbox" id="admMailjetEnabled"> Enable email notifications</label>
+                    <label style="font-size:12px;color:#94a3b8">Transactional provider
+                        <select id="admEmailProvider" class="multiplier-input" style="width:100%">
+                            <option value="brevo">Brevo</option>
+                        </select>
+                    </label>
+                    <label style="font-size:12px;color:#94a3b8">Brevo transport
+                        <select id="admBrevoTransport" class="multiplier-input" style="width:100%" onchange="toggleBrevoTransport()">
+                            <option value="api">Brevo API</option><option value="smtp">Brevo SMTP relay</option>
+                        </select>
+                    </label>
+                    <div style="font-size:12px;color:#94a3b8">Trend change alerts</div>
+                    <label><input type="checkbox" id="admNotifyPotential" checked> Potential intraday changes <span style="color:#fbbf24;font-size:11px">(not confirmed until daily close)</span></label>
+                    <label><input type="checkbox" id="admNotifyConfirmed" checked> Confirmed daily changes</label>
+                    <label><input type="checkbox" id="admNotifyRecovery" checked> Recovery / alignment restored</label>
+                    <label><input type="checkbox" id="admNotifyWeakening" checked> Position weakening warnings</label>
+                    <label><input type="checkbox" id="admNotifyDataQuality" checked> Data-quality warnings</label>
+                    <label><input type="checkbox" id="admNotifyRisk" checked> Basket risk / exit alerts</label>
+                    <label><input type="checkbox" id="admNotifyExpiry" checked> Expiry / rollover alerts</label>
+                    <label><input type="checkbox" id="admNotifyBullish" checked> Bullish</label>
+                    <label><input type="checkbox" id="admNotifyBearish" checked> Bearish</label>
+                    <label><input type="checkbox" id="admNotifyNeutral"> Neutral</label>
+                    <label style="font-size:12px;color:#94a3b8">Event delivery
+                        <select id="admEmailTiming" class="multiplier-input" style="width:100%" onchange="toggleEmailDelayFields()">
+                            <option value="immediate">Send immediately</option>
+                            <option value="custom_delay">Send after a custom delay</option>
+                        </select>
+                    </label>
+                    <div id="admEmailDelayFields" style="display:none;grid-template-columns:1fr 1fr;gap:8px">
+                        <label style="font-size:12px;color:#94a3b8">Hours
+                            <input type="number" id="admEmailDelayHours" class="multiplier-input" min="0" max="24" value="0" style="width:100%">
+                        </label>
+                        <label style="font-size:12px;color:#94a3b8">Minutes
+                            <input type="number" id="admEmailDelayMinutes" class="multiplier-input" min="0" max="59" value="5" style="width:100%">
+                        </label>
+                    </div>
+                    <div style="font-size:11px;color:#94a3b8">A delayed trend event is sent by the running app shortly after its delay expires. New trend changes replace a waiting event.</div>
+                    <textarea id="admMailjetRecipients" class="multiplier-input" style="width:100%;min-height:56px" placeholder="Recipients (one per line or comma separated)"></textarea>
+                    <input type="email" id="admMailjetFrom" class="multiplier-input" style="width:100%" value="mcxalerts@webprobity.com" placeholder="Verified sender email">
+                    <input type="text" id="admEmailFromName" class="multiplier-input" style="width:100%" placeholder="Sender name">
+                    <input type="password" id="admBrevoKey" class="multiplier-input" style="width:100%" placeholder="Brevo API key (xkeysib-...)" autocomplete="new-password">
+                    <div id="admBrevoSmtpFields" style="display:none;grid-template-columns:1fr 1fr;gap:8px">
+                        <input type="text" id="admBrevoSmtpHost" class="multiplier-input" value="smtp-relay.brevo.com" placeholder="SMTP host">
+                        <input type="number" id="admBrevoSmtpPort" class="multiplier-input" value="587" min="1" max="65535" placeholder="SMTP port">
+                        <input type="text" id="admBrevoSmtpLogin" class="multiplier-input" placeholder="SMTP login (e.g. ...@smtp-brevo.com)">
+                        <input type="password" id="admBrevoSmtpKey" class="multiplier-input" placeholder="Brevo SMTP key" autocomplete="new-password">
+                    </div>
+                    <input type="password" id="admMailjetKey" class="multiplier-input" style="display:none" autocomplete="new-password">
+                    <input type="password" id="admMailjetSecret" class="multiplier-input" style="display:none" autocomplete="new-password">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <button class="btn btn-primary" onclick="adminSaveMailjet()">Save Settings</button>
+                        <button class="btn btn-secondary" onclick="adminTestMailjet()">Send Brevo Test Email</button>
+                    </div>
+                    <div class="card" style="margin-top:8px;background:#0b1424">
+                        <div style="display:flex;justify-content:space-between;align-items:center"><strong>📨 Email delivery log</strong><button class="btn btn-secondary" onclick="loadEmailLogs()">Refresh</button></div>
+                        <div id="admEmailLogStatus" style="font-size:11px;color:#94a3b8;margin:6px 0">No delivery attempts loaded.</div>
+                        <div id="admEmailLogBody" style="overflow:auto;max-height:220px;font-size:11px"></div>
                     </div>
                 </div>
             </div>
+
 
             <!-- 2. Governance & Limits -->
             <div class="card">
@@ -1964,30 +1750,7 @@
                 </div>
             </div>
 
-            <!-- 3. User Management [NEW] -->
-            <div class="card" style="grid-column: span 2;">
-                <div class="card-title">👥 User Management</div>
-                <div style="margin-bottom: 12px;">
-                    <button class="btn btn-primary" onclick="showAddUserModal()">+ Add User</button>
-                    <button class="btn btn-secondary" onclick="loadUserList()">Refresh List</button>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Role</th>
-                            <th>Status.</th>
-                            <th>Last Login</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminUserTable">
-                        <tr>
-                            <td colspan="5" style="text-align:center; color:#64748b;">Loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
 
             <!-- 4. Emergency Controls -->
             <div class="card">
@@ -2010,7 +1773,7 @@
             </div>
 
             <!-- 5. Audit Log [ENHANCED] -->
-            <div class="card" style="grid-column: span 2;">
+            <div class="card admin-wide">
                 <div class="card-title" style="display:flex; justify-content:space-between;">
                     <span>📜 Decision Log & Audit Trail</span>
                     <button class="btn btn-secondary" style="font-size:10px; padding: 4px 8px;"
@@ -2024,341 +1787,35 @@
         </div>
     </div>
 
-    <!-- P&L Simulator Tab [NEW] -->
-    <div id="tab-simulator" class="tab-content">
-        <div class="card"
-            style="margin-bottom: 24px; border: 2px solid rgba(167, 139, 250, 0.3); background: linear-gradient(135deg, rgba(167, 139, 250, 0.08), rgba(59, 130, 246, 0.04));">
-            <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <span>📊 Expiry-Aware P&L Simulator</span>
-                <button class="btn btn-primary" onclick="runSimulation()">▶ Run Simulation</button>
-            </div>
-
-            <!-- Input Summary -->
-            <div id="simInputSummary"
-                style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; padding: 16px; background: rgba(0,0,0,0.2); border-radius: 12px;">
-                <div>
-                    <div class="stat-label">Current CMP</div>
-                    <div id="simCmp" style="font-size: 20px; font-weight: 800; color: #60a5fa;">---.--</div>
-                </div>
-                <div>
-                    <div class="stat-label">ATM Strike</div>
-                    <div id="simAtm" style="font-size: 20px; font-weight: 800; color: #f8fafc;">---</div>
-                </div>
-                <div>
-                    <div class="stat-label">Days to Expiry</div>
-                    <div id="simDte" style="font-size: 20px; font-weight: 800; color: #fbbf24;">-</div>
-                </div>
-                <div>
-                    <div class="stat-label">Position</div>
-                    <div id="simPosition" style="font-size: 12px; font-weight: 600; color: #94a3b8;">Futures + Hedge +
-                        Iron Fly</div>
-                </div>
-            </div>
-
-            <!-- Loading State -->
-            <div id="simLoading" style="display: none; text-align: center; padding: 60px;">
-                <div style="font-size: 32px; margin-bottom: 16px;">⏳</div>
-                <div style="color: #94a3b8;">Running simulation...</div>
-            </div>
-
-            <!-- Empty State -->
-            <div id="simEmpty" style="text-align: center; padding: 60px; color: #64748b;">
-                <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.3;">📊</div>
-                <div style="font-size: 16px; font-weight: 600;">Click "Run Simulation" to generate scenarios</div>
-                <div style="font-size: 12px; margin-top: 8px;">Uses live CMP and calculates P&L across price movements
-                    and time decay</div>
-            </div>
-
-            <!-- Results Container -->
-            <div id="simResults" style="display: none;">
-                <!-- Scenario Grid -->
-                <div style="overflow-x: auto;">
-                    <table id="simScenarioTable" style="width: 100%; font-size: 12px;">
-                        <thead>
-                            <tr style="background: rgba(0,0,0,0.3);">
-                                <th style="padding: 12px; text-align: left;">Price</th>
-                                <th style="padding: 12px; text-align: center;">Move</th>
-                                <th style="padding: 12px; text-align: center;">DTE</th>
-                                <th style="padding: 12px; text-align: right;">Net P&L</th>
-                                <th style="padding: 12px; text-align: center;">Risk</th>
-                            </tr>
-                        </thead>
-                        <tbody id="simScenarioBody">
-                            <!-- JS Populated -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Analytics Summary -->
-                <div id="simAnalytics"
-                    style="margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-                    <div class="card"
-                        style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
-                        <div class="stat-label" style="color: #10b981;">Theta Harvest Zone</div>
-                        <div id="simThetaZone" style="font-size: 14px; color: #f8fafc;">-</div>
-                    </div>
-                    <div class="card" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
-                        <div class="stat-label" style="color: #ef4444;">Danger Zone</div>
-                        <div id="simDangerZone" style="font-size: 14px; color: #f8fafc;">-</div>
-                    </div>
-                    <div class="card"
-                        style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
-                        <div class="stat-label" style="color: #3b82f6;">Max Profit Scenario</div>
-                        <div id="simMaxProfit" style="font-size: 14px; color: #10b981;">-</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
-
-    <!-- Add User Modal -->
-    <div id="addUserModal"
-        style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items:center; justify-content:center;">
-        <div class="card" style="width: 400px; background: #0f172a;">
-            <div class="card-title">Add New User</div>
-            <!-- PROFILE TAB -->
-            <div id="tab-profile" class="tab-content">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                    <!-- Card 1: Identity & Role -->
-                    <div class="card">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 12px; letter-spacing: 0.05em;">
-                            IDENTITY & ROLE</div>
-                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-                            <div
-                                style="width: 48px; height: 48px; background: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">
-                                👤</div>
-                            <div>
-                                <div id="profName" style="font-size: 18px; font-weight: 700; color: #f8fafc;">Guest User
-                                </div>
-                                <div id="profRole" class="badge badge-neutral">VIEWER</div>
-                            </div>
-                        </div>
-                        <div
-                            style="font-size: 13px; color: #94a3b8; display: flex; justify-content: space-between; border-top: 1px solid #334155; padding-top: 12px;">
-                            <span>System Login ID:</span>
-                            <span id="profLogin" style="color: #e2e8f0; font-family: monospace;">guest.01</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Strategy Lock -->
-                    <div class="card">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 12px; letter-spacing: 0.05em;">
-                            STRATEGY ASSIGNMENT</div>
-                        <div style="text-align: center; padding: 15px 0;">
-                            <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">ACTIVE MANDATE</div>
-                            <div id="profStrategy"
-                                style="font-size: 24px; font-weight: 800; color: #3b82f6; letter-spacing: -0.02em;">
-                                NATGAS BENCHMARK</div>
-                            <div style="font-size: 11px; color: #94a3b8; margin-top: 8px;">
-                                Authentication locks user actions to this strategy.<br>Cross-trading is strictily
-                                prohibited.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
-                    <!-- Card 3: Risk Limits -->
-                    <div class="card">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 16px; letter-spacing: 0.05em;">
-                            RISK LIMIT PROFILE</div>
-
-                        <div style="margin-bottom: 16px;">
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
-                                <span style="color: #94a3b8;">Max Futures Position</span>
-                                <span id="profMaxFut" style="color: #f8fafc; font-weight: 600;">5 LOTS</span>
-                            </div>
-                            <div class="progress-bg">
-                                <div style="width: 100%; background: #3b82f6;" class="progress-fill"></div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 16px;">
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
-                                <span style="color: #94a3b8;">Daily Adjustments</span>
-                                <span id="profMaxAdj" style="color: #f8fafc; font-weight: 600;">3 MAX</span>
-                            </div>
-                            <div class="progress-bg">
-                                <div style="width: 100%; background: #f59e0b;" class="progress-fill"></div>
-                            </div>
-                        </div>
-
-                        <div
-                            style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #334155; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 12px; color: #64748b;">Risk Compliance</span>
-                            <span id="profRiskStatus"
-                                style="font-size: 13px; font-weight: 700; color: #10b981;">COMPLIANT</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Action Permissions -->
-                    <div class="card">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 16px; letter-spacing: 0.05em;">
-                            ACTION PERMISSIONS MATRIX</div>
-                        <table style="width: 100%; font-size: 13px;">
-                            <thead>
-                                <tr style="text-align: left; color: #64748b;">
-                                    <th style="padding-bottom: 12px;">Action Type</th>
-                                    <th style="padding-bottom: 12px;">Authorization Status</th>
-                                    <th style="padding-bottom: 12px;">Verification</th>
-                                </tr>
-                            </thead>
-                            <tbody id="profPermBody">
-                                <!-- Populated by JS -->
-                                <tr>
-                                    <td colspan="3" style="text-align: center; color: #475569;">Loading permissions...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-
-            <input id="newUsername" type="text" placeholder="Username (Login ID)"
-                style="padding: 8px; background: rgba(255,255,255,0.1); border:none; color:white; border-radius:4px;">
-            <input id="newPassword" type="password" placeholder="Password"
-                style="padding: 8px; background: rgba(255,255,255,0.1); border:none; color:white; border-radius:4px;">
-            <input id="newName" type="text" placeholder="Full Name"
-                style="padding: 8px; background: rgba(255,255,255,0.1); border:none; color:white; border-radius:4px;">
-            <select id="newRole"
-                style="padding: 8px; background: rgba(255,255,255,0.1); border:none; color:white; border-radius:4px;">
-                <option value="VIEWER">Viewer</option>
-                <option value="OPERATOR">Operator</option>
-                <option value="RISK_MANAGER">Risk Manager</option>
-                <option value="ADMIN">Admin</option>
-            </select>
-            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
-                <button class="btn btn-secondary"
-                    onclick="document.getElementById('addUserModal').style.display='none'">Cancel</button>
-                <button class="btn btn-primary" onclick="submitAddUser()">Create User</button>
-            </div>
-        </div>
-    </div>
-    </div>
 
 
 
     <script>
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+
+
+
+        function switchTab(tabId) {
+            const target = document.getElementById('tab-' + tabId);
+            const button = [...document.querySelectorAll('.tab')].find(t => t.getAttribute('onclick') === `switchTab('${tabId}')`);
+            if (!target || !button) return;
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-
-            // Show selected tab
-            document.getElementById('tab-' + tabName).classList.add('active');
-            event.target.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            button.classList.add('active');
+            target.classList.add('active');
+            if (tabId === 'master-console') {
+                pollOrderIntents();
+                pollMasterConsole();
+            }
         }
-
-
 
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
 
-        function toggleMode() {
-            fetch('/api/toggle_autonomous', { method: 'POST' })
-                .then(r => r.json())
-                .then(data => updateDashboard());
-        }
 
         // ===== P&L SIMULATOR =====
-        async function runSimulation() {
-            const loadingEl = document.getElementById('simLoading');
-            const emptyEl = document.getElementById('simEmpty');
-            const resultsEl = document.getElementById('simResults');
 
-            // Show loading
-            loadingEl.style.display = 'block';
-            emptyEl.style.display = 'none';
-            resultsEl.style.display = 'none';
-
-            try {
-                const response = await fetch('/api/simulate-scenarios');
-                const data = await response.json();
-
-                if (data.status === 'error') {
-                    alert(data.message);
-                    loadingEl.style.display = 'none';
-                    emptyEl.style.display = 'block';
-                    return;
-                }
-
-                renderSimulation(data.simulation);
-
-                loadingEl.style.display = 'none';
-                resultsEl.style.display = 'block';
-            } catch (e) {
-                console.error('Simulation error:', e);
-                alert('Simulation failed: ' + e.message);
-                loadingEl.style.display = 'none';
-                emptyEl.style.display = 'block';
-            }
-        }
-
-        function renderSimulation(sim) {
-            // Update input summary
-            document.getElementById('simCmp').textContent = sim.cmp?.toFixed(2) || '---';
-            document.getElementById('simAtm').textContent = sim.atm_strike || '---';
-            document.getElementById('simDte').textContent = sim.initial_dte + ' days';
-
-            // Build scenario table
-            const tbody = document.getElementById('simScenarioBody');
-            tbody.innerHTML = '';
-
-            const riskColors = {
-                'SAFE': '#10b981',
-                'STABLE': '#3b82f6',
-                'WARNING': '#fbbf24',
-                'DANGER': '#ef4444'
-            };
-
-            sim.scenarios.forEach(s => {
-                const pnlColor = s.net_pnl >= 0 ? '#10b981' : '#ef4444';
-                const riskColor = riskColors[s.risk_posture] || '#94a3b8';
-
-                const row = document.createElement('tr');
-                row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-                row.innerHTML = `
-                    <td style="padding: 12px; font-weight: 600; color: #f8fafc;">${s.price.toFixed(2)}</td>
-                    <td style="padding: 12px; text-align: center; color: ${s.price_change.startsWith('+') ? '#10b981' : '#ef4444'};">${s.price_change}</td>
-                    <td style="padding: 12px; text-align: center; color: #fbbf24;">${s.dte_label}</td>
-                    <td style="padding: 12px; text-align: right; font-weight: 700; color: ${pnlColor};">₹${s.net_pnl.toLocaleString('en-IN')}</td>
-                    <td style="padding: 12px; text-align: center;">
-                        <span style="background: ${riskColor}22; color: ${riskColor}; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700;">${s.risk_posture}</span>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update analytics
-            if (sim.analytics) {
-                const a = sim.analytics;
-                document.getElementById('simThetaZone').innerHTML = `
-                    Range: <strong>${a.theta_harvest_zone?.range || '-'}</strong><br>
-                    Best at: ${a.theta_harvest_zone?.best_dte || '-'}<br>
-                    Avg P&L: ₹${(a.theta_harvest_zone?.avg_pnl || 0).toLocaleString('en-IN')}
-                `;
-                document.getElementById('simDangerZone').innerHTML = `
-                    Trigger: <strong>${a.danger_zone?.trigger || '-'}</strong><br>
-                    ${a.danger_zone?.warning || '-'}
-                `;
-                document.getElementById('simMaxProfit').innerHTML = `
-                    Price: <strong>${a.max_profit?.price?.toFixed(2) || '-'}</strong><br>
-                    DTE: ${a.max_profit?.dte || '-'}<br>
-                    P&L: ₹${(a.max_profit?.pnl || 0).toLocaleString('en-IN')}
-                `;
-            }
-        }
         // ===== END P&L SIMULATOR =====
 
         function adjustMultiplier(delta) {
@@ -2409,59 +1866,12 @@
 
         let currentInstrument = 'NATGASMINI';
 
-        async function initInstrumentSelector() {
-            try {
-                const resp = await fetch('/api/instruments');
-                const data = await resp.json();
-                if (data.success && data.instruments) {
-                    const sel = document.getElementById('instrumentSelector');
-                    sel.innerHTML = '';
-                    data.instruments.forEach(inst => {
-                        const opt = document.createElement('option');
-                        opt.value = inst.symbol;
-                        const emoji = INSTRUMENT_EMOJIS[inst.symbol] || '📊';
-                        opt.textContent = `${emoji} ${inst.display_name}`;
-                        if (inst.symbol === currentInstrument) opt.selected = true;
-                        sel.appendChild(opt);
-                    });
-                }
-            } catch (e) {
-                console.warn('Failed to load instruments:', e);
-            }
-        }
-
-        function onInstrumentChange(symbol) {
-            currentInstrument = symbol;
-            // Update all dashboard labels to reflect selected instrument
-            const config = INSTRUMENT_EMOJIS[symbol] ? symbol : 'NATGASMINI';
-            const names = {
-                'NATGASMINI': 'NG', 'CRUDEOILM': 'CRUDE', 'SILVERM': 'SILVER',
-                'GOLDM': 'GOLD', 'ALUMINI': 'ALUMINIUM', 'NICKEL': 'NICKEL',
-                'NIFTY': 'NIFTY', 'BANKNIFTY': 'BANKNIFTY'
-            };
-            const shortName = names[symbol] || symbol;
-
-            // Update labels
-            const titleEl = document.getElementById('consoleTitleText');
-            if (titleEl) titleEl.textContent = shortName;
-
-            const stateEl = document.getElementById('strategyStateLabel');
-            if (stateEl) stateEl.textContent = shortName + ' Strategy State';
-
-            const trendEl = document.getElementById('trendEngineLabel');
-            if (trendEl) trendEl.textContent = shortName;
-
-            const healthEl = document.getElementById('strategyHealthLabel');
-            if (healthEl) healthEl.textContent = shortName;
-
-            console.log(`🔄 Instrument changed to: ${symbol} (${shortName})`);
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
-            initInstrumentSelector();
+
             startDataOrchestrator();
             // Initial loads (local state only, no API calls)
-            loadUserList();
+
         });
 
         function startDataOrchestrator() {
@@ -2501,15 +1911,11 @@
                     updateStrategyUI(data);
                     updateAdjustmentStatus(data);
                     updatePendingSignal(data);
-                    updateProfile(data);
+                    updateRecommendedPositionPanel(data.recommended_position);
+                    updateAdaptiveStrategyStatus(data);
                     updateAlerts(data.alerts);
 
                     // Mode + Status pills
-                    const modeBtn = document.getElementById('modeToggle');
-                    if (modeBtn) {
-                        modeBtn.textContent = data.autonomous_mode ? 'Mode: AUTONOMOUS' : 'Mode: MANUAL';
-                        modeBtn.className = data.autonomous_mode ? 'btn btn-success' : 'btn btn-secondary';
-                    }
                     const statusPill = document.getElementById('statusToggle');
                     if (statusPill) {
                         if (data.status === 'STOPPED') {
@@ -2524,13 +1930,11 @@
                     // Admin config sync
                     if (data.admin_config && document.activeElement.tagName !== 'INPUT') {
                         const ac = data.admin_config;
+                        if (document.getElementById('chkNewsRisk')) document.getElementById('chkNewsRisk').checked = !!ac.news_risk_enabled;
+                        if (document.getElementById('activeSignalStrategy')) document.getElementById('activeSignalStrategy').value = ac.active_strategy || 'STRATEGY_1';
                         if (document.getElementById('admMaxAdj')) document.getElementById('admMaxAdj').value = ac.max_adjustments_per_day;
                         if (document.getElementById('admSustain')) document.getElementById('admSustain').value = ac.sustain_time_hours;
                         if (document.getElementById('admObsDays')) document.getElementById('admObsDays').value = ac.observation_period_days;
-                        if (data.telegram_config) {
-                            if (document.getElementById('admTeleToken')) document.getElementById('admTeleToken').value = data.telegram_config.bot_token || '';
-                            if (document.getElementById('admTeleChatId')) document.getElementById('admTeleChatId').value = data.telegram_config.chat_id || '';
-                        }
                     }
 
                     // Logs
@@ -2549,6 +1953,28 @@
         // This only reads LOCAL cached state, no Fyers API calls
         function updateDashboard() {
             pollLocalStateOnly();
+        }
+
+        function updateAdaptiveStrategyStatus(data) {
+            const status = document.getElementById('adaptiveStrategyStatus');
+            const basket = document.getElementById('activeBasketSummary');
+            if (!status) return;
+            const rec = data.recommended_position || {};
+            const label = rec.strategy_label || 'WAIT / NO TRADE';
+            const reason = rec.rationale || rec.primary_action_detail || 'Refresh market data to evaluate the completed-candle signal.';
+            status.textContent = `${label}: ${reason}`;
+            status.style.color = rec.trade_approved ? '#10b981' : '#fbbf24';
+            const intent = data.current_order_intent;
+            const exec = data.order_execution_state;
+            if (basket) {
+                if (intent && ['DRAFT','VALIDATED'].includes(intent.status)) {
+                    basket.textContent = `Active basket: ${intent.strategy_name || 'Adaptive strategy'} · ${intent.direction || 'WAIT'} · ${intent.status}. Open Master Order Console to review.`;
+                } else if (exec && exec.basket_id && !['COMPLETED','CANCELLED'].includes(exec.status)) {
+                    basket.textContent = `Active basket: ${exec.basket_id} · ${exec.status || 'PENDING'}. Open Master Order Console to review.`;
+                } else {
+                    basket.textContent = 'Active basket: none. A basket appears after a confirmed signal and validation.';
+                }
+            }
         }
 
         // --- ENGINE 1: MARKET (FAST) ---
@@ -2586,17 +2012,11 @@
                     updateStrategyUI(data);
                     updateAdjustmentStatus(data);
                     updatePendingSignal(data);
-                    updateProfile(data);
 
                     // [NEW] Update Alerts
                     updateAlerts(data.alerts);
 
                     // Direct DOM updates for System Stats
-                    const modeBtn = document.getElementById('modeToggle');
-                    if (modeBtn) {
-                        modeBtn.textContent = data.autonomous_mode ? 'Mode: AUTONOMOUS' : 'Mode: MANUAL';
-                        modeBtn.className = data.autonomous_mode ? 'btn btn-success' : 'btn btn-secondary';
-                    }
 
                     const statusPill = document.getElementById('statusToggle');
                     if (statusPill) {
@@ -2612,15 +2032,11 @@
                     // Admin Config Sync (only if not typing)
                     if (data.admin_config && document.activeElement.tagName !== 'INPUT') {
                         const ac = data.admin_config;
+                        if (document.getElementById('chkNewsRisk')) document.getElementById('chkNewsRisk').checked = !!ac.news_risk_enabled;
+                        if (document.getElementById('activeSignalStrategy')) document.getElementById('activeSignalStrategy').value = ac.active_strategy || 'STRATEGY_1';
                         if (document.getElementById('admMaxAdj')) document.getElementById('admMaxAdj').value = ac.max_adjustments_per_day;
                         if (document.getElementById('admSustain')) document.getElementById('admSustain').value = ac.sustain_time_hours;
                         if (document.getElementById('admObsDays')) document.getElementById('admObsDays').value = ac.observation_period_days;
-
-                        // Telegram Config Sync
-                        if (data.telegram_config) {
-                            if (document.getElementById('admTeleToken')) document.getElementById('admTeleToken').value = data.telegram_config.bot_token || '';
-                            if (document.getElementById('admTeleChatId')) document.getElementById('admTeleChatId').value = data.telegram_config.chat_id || '';
-                        }
                     }
 
                     // Logs
@@ -2928,6 +2344,17 @@
                 .catch(err => console.error("Strategy State Poll Error:", err));
         }
 
+        function actOnOrderIntent(intentId, action) {
+            fetch('/api/orders/action', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({basket_id:intentId, action}) })
+                .then(r => r.json()).then(data => {
+                    alert(data.message || data.status || 'Order action processed');
+                    pollOrderIntents(); pollMasterConsole(); updateDashboard();
+                }).catch(error => alert(error.message));
+        }
+        function validateIntent(id) { actOnOrderIntent(id, 'APPROVE'); }
+        function executeIntent(id) { actOnOrderIntent(id, 'EXECUTE'); }
+        function cancelIntent(id) { if (confirm('Cancel this order intent?')) actOnOrderIntent(id, 'CANCEL'); }
+
         function pollOrderIntents() {
             fetch('/api/orders/intent/current')
                 .then(r => r.json())
@@ -3016,23 +2443,6 @@
         let consoleFilter = 'ALL';
         let consoleStrategy = '';
 
-        async function switchTab(tabId) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-            const tabMap = {
-                'dashboard': 0, 'master-console': 1, 'adjustments': 2,
-                'positions': 3, 'profile': 4, 'admin': 5
-            };
-            document.querySelectorAll('.tab')[tabMap[tabId]].classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
-
-            // Auto-refresh on tab switch DISABLED to save API quota.
-            // User must click "Refresh Data" to load fresh data.
-            // if (tabId === 'master-console') { loadLiveOrders(); loadLivePositions(); }
-            // if (tabId === 'positions') { loadLivePositions(); }
-            // if (tabId === 'profile') { loadUserProfile(); }
-        }
 
         function setConsoleFilter(filter, btn) {
             consoleFilter = filter;
@@ -3069,8 +2479,181 @@
                 .then(data => {
                     renderMasterConsole(data.baskets);
                     updateMasterSummary(data.baskets);
+                    pollStrategyEvents();
                 })
                 .catch(err => console.error("Console Poll Error:", err));
+        }
+
+        function renderTrendCalendar(signals, potential, scanId) {
+            const calendar = document.getElementById('trendTimeline');
+            const selection = document.getElementById('trendCalendarSelection');
+            if (!calendar) return;
+            const dayPattern = /^\d{4}-\d{2}-\d{2}$/;
+            const byDate = new Map();
+            signals.forEach(event => {
+                const date = String(event.candle_at || event.payload?.date || '').slice(0, 10);
+                if (dayPattern.test(date) && !byDate.has(date)) byDate.set(date, event);
+            });
+            const dates = [...byDate.keys()].sort();
+            const potentialDate = String(potential?.occurred_at || '').slice(0, 10);
+            if (!dates.length) {
+                calendar.textContent = 'Run a scan to build the completed-candle calendar.';
+                if (selection) selection.textContent = 'Select a dated tile to find its saved signal in the journal below. Dates use IST.';
+                return;
+            }
+            const firstDate = dates[0];
+            const latestDate = dates[dates.length - 1];
+            const lastDate = potential && dayPattern.test(potentialDate) && potentialDate > latestDate ? potentialDate : latestDate;
+            const firstMonth = new Date(`${firstDate.slice(0, 7)}-01T00:00:00Z`);
+            const lastMonth = new Date(`${lastDate.slice(0, 7)}-01T00:00:00Z`);
+            calendar.replaceChildren();
+            for (let month = firstMonth; month <= lastMonth; month = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth() + 1, 1))) {
+                const year = month.getUTCFullYear();
+                const monthNumber = month.getUTCMonth();
+                const panel = document.createElement('section');
+                panel.className = 'trend-calendar-month';
+                const heading = document.createElement('h3');
+                heading.textContent = month.toLocaleString('en-IN', {month:'long', year:'numeric', timeZone:'UTC'});
+                panel.appendChild(heading);
+                const grid = document.createElement('div');
+                grid.className = 'trend-calendar-grid';
+                ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(name => {
+                    const label = document.createElement('span');
+                    label.className = 'trend-calendar-weekday';
+                    label.textContent = name;
+                    grid.appendChild(label);
+                });
+                const leading = (month.getUTCDay() + 6) % 7;
+                for (let index = 0; index < leading; index++) {
+                    const blank = document.createElement('span');
+                    blank.className = 'trend-calendar-day outside';
+                    grid.appendChild(blank);
+                }
+                const numberOfDays = new Date(Date.UTC(year, monthNumber + 1, 0)).getUTCDate();
+                for (let number = 1; number <= numberOfDays; number++) {
+                    const date = `${year}-${String(monthNumber + 1).padStart(2, '0')}-${String(number).padStart(2, '0')}`;
+                    const weekday = new Date(`${date}T00:00:00Z`).getUTCDay();
+                    const event = byDate.get(date);
+                    const isPotential = date === potentialDate && potential && date > latestDate;
+                    const tile = document.createElement(event || isPotential ? 'button' : 'span');
+                    tile.className = 'trend-calendar-day';
+                    if (date < firstDate || date > lastDate) tile.classList.add('outside');
+                    else if (event) {
+                        const trend = ['BULLISH','BEARISH','NEUTRAL'].includes(event.trend) ? event.trend : 'NEUTRAL';
+                        tile.classList.add(trend.toLowerCase());
+                        if (event.previous_trend && event.previous_trend !== event.trend) tile.classList.add('change');
+                        if (date === latestDate) tile.classList.add('latest');
+                        if (date === window.selectedTrendCalendarDate) tile.classList.add('selected');
+                        tile.type = 'button';
+                        tile.setAttribute('aria-label', `${date} IST: confirmed ${trend.toLowerCase()}${tile.classList.contains('change') ? ', trend changed' : ', trend continues'}`);
+                        tile.title = `${date} IST · ${trend} · ${String(event.signal_status || '').replaceAll('_', ' ')}`;
+                        tile.addEventListener('click', () => {
+                            window.selectedTrendCalendarDate = date;
+                            calendar.querySelectorAll('.trend-calendar-day.selected').forEach(item => item.classList.remove('selected'));
+                            tile.classList.add('selected');
+                            const details = event.payload?.details || {};
+                            if (selection) selection.textContent = `${date} IST · Confirmed ${trend} · CE ${details.ce_close ?? '—'} / MA9 ${details.ce_ma9 ?? '—'} · PE ${details.pe_close ?? '—'} / MA9 ${details.pe_ma9 ?? '—'}`;
+                            const rows = [...document.querySelectorAll('#strategyEventBody tr')];
+                            rows.forEach(row => row.classList.remove('journal-selected-row'));
+                            const row = rows.find(item => item.dataset.candleDate === date && item.dataset.scanId === scanId && item.dataset.eventType === 'HISTORICAL_SIGNAL');
+                            if (row) { row.classList.add('journal-selected-row'); row.scrollIntoView({behavior:'smooth', block:'center'}); }
+                        });
+                    } else if (isPotential) {
+                        tile.classList.add('potential');
+                        tile.type = 'button';
+                        tile.setAttribute('aria-label', `${date} IST: possible ${potential.payload?.potential_trend || 'trend change'}, not confirmed`);
+                        tile.title = 'Potential intraday change; wait for completed daily candle';
+                        tile.addEventListener('click', () => { if (selection) selection.textContent = `${date} IST · Potential ${potential.payload?.potential_trend || 'trend change'} · Not confirmed until the daily candle closes.`; });
+                    } else if (weekday === 0 || weekday === 6) tile.classList.add('weekend');
+                    else { tile.classList.add('no-record'); tile.title = `${date} IST · No saved candle record; may be a market holiday`; }
+                    tile.textContent = String(number);
+                    if (event || isPotential) {
+                        const status = document.createElement('small');
+                        status.textContent = isPotential ? 'PENDING' : tile.classList.contains('change') ? 'CHANGE' : event.signal_status?.startsWith('PAIRED_') ? 'CROSS' : event.signal_status?.startsWith('TREND_CONTINUES') ? 'CONT.' : (event.trend === 'BULLISH' ? '↑' : event.trend === 'BEARISH' ? '↓' : '—');
+                        tile.appendChild(status);
+                    } else if (tile.classList.contains('no-record')) {
+                        const status = document.createElement('small');
+                        status.textContent = 'NO RECORD';
+                        tile.appendChild(status);
+                    }
+                    grid.appendChild(tile);
+                }
+                panel.appendChild(grid);
+                calendar.appendChild(panel);
+            }
+        }
+
+        function pollStrategyEvents() {
+            fetch('/api/strategy/events?limit=250')
+                .then(r => r.json()).then(data => {
+                    const body = document.getElementById('strategyEventBody');
+                    if (!body) return;
+                    const allSignals = (data.events || []).filter(e => e.event_type === 'HISTORICAL_SIGNAL');
+                    const scanId = allSignals[0]?.scan_id || allSignals[0]?.payload?.scan_id;
+                    const signals = allSignals.filter(e => (e.scan_id || e.payload?.scan_id) === scanId);
+                    const latest = signals[0];
+                    const latestChange = (data.events || []).find(e => e.event_type === 'HISTORICAL_TREND_CHANGE' && (e.scan_id || e.payload?.scan_id) === scanId && e.trend === latest?.trend);
+                    const counts = { BULLISH:0, BEARISH:0, NEUTRAL:0, CHANGES:0 };
+                    signals.forEach(e => { if (counts[e.trend] !== undefined) counts[e.trend]++; if (e.previous_trend && e.previous_trend !== e.trend) counts.CHANGES++; });
+                    const summary = document.getElementById('journalSummary');
+                    if (summary) summary.innerHTML = [
+                        ['LATEST TREND', latest?.trend || '-', latest?.trend === 'BULLISH' ? '#10b981' : latest?.trend === 'BEARISH' ? '#f87171' : '#cbd5e1'],
+                        ['COMPLETED DAYS', signals.length, '#f8fafc'], ['BULLISH', counts.BULLISH, '#10b981'], ['BEARISH', counts.BEARISH, '#f87171'], ['NEUTRAL', counts.NEUTRAL, '#cbd5e1'], ['CHANGES', counts.CHANGES, '#60a5fa']
+                    ].map(x => `<div class="trend-summary-item"><label>${x[0]}</label><strong style="font-size:18px;color:${x[2]}">${x[1]}</strong></div>`).join('');
+                    const trendEl = document.getElementById('journalDecisionTrend');
+                    const actionEl = document.getElementById('journalDecisionAction');
+                    const reasonEl = document.getElementById('journalDecisionReason');
+                    const basketEl = document.getElementById('journalDecisionBasket');
+                    const trendColor = latest?.trend === 'BULLISH' ? '#10b981' : latest?.trend === 'BEARISH' ? '#f87171' : '#cbd5e1';
+                    if (trendEl) { trendEl.textContent = latest?.trend || 'WAITING FOR SCAN'; trendEl.style.color = trendColor; }
+                    if (actionEl) { actionEl.textContent = latest?.trend === 'BULLISH' || latest?.trend === 'BEARISH' ? 'CONSIDER BASKET' : 'WAIT / NO TRADE'; actionEl.className = 'badge ' + (latest?.trend === 'BULLISH' ? 'badge-bullish' : latest?.trend === 'BEARISH' ? 'badge-bearish' : 'badge-neutral'); }
+                    if (reasonEl) reasonEl.textContent = latest ? `${latest.signal_status || 'No signal'} · MA9 option closes are authoritative${latest.futures_confirmation ? ` · Futures context ${latest.futures_confirmation}` : ''}` : 'Run a historical scan or refresh strategy data.';
+                    if (basketEl) basketEl.textContent = latest?.payload?.basket?.label || (latest?.trend === 'NEUTRAL' ? 'Consolidation / wait' : 'Trending market');
+                    const sinceEl = document.getElementById('journalPersistedSince');
+                    if (sinceEl) sinceEl.textContent = latestChange?.candle_at ? new Date(latestChange.candle_at).toLocaleDateString('en-IN') : (latest?.candle_at ? new Date(latest.candle_at).toLocaleDateString('en-IN') : '-');
+                    const confEl = document.getElementById('journalDecisionConfidence');
+                    if (confEl) confEl.textContent = latest?.signal_status?.startsWith('PAIRED_') ? 'HIGH' : latest ? 'MEDIUM' : '-';
+                    const latestEl = document.getElementById('journalLatestConfirmation');
+                    if (latestEl) latestEl.textContent = latest?.candle_at ? new Date(latest.candle_at).toLocaleString('en-IN') : '-';
+                    const todayIst = new Date(Date.now() + 330 * 60000).toISOString().slice(0, 10);
+                    const potential = (data.events || []).find(e => e.event_type === 'INTRADAY_TREND_CHANGE' && String(e.occurred_at || '').slice(0, 10) === todayIst && Date.now() - new Date(e.occurred_at).getTime() < 30 * 60000 && e.payload?.potential_trend && e.payload.potential_trend !== latest?.trend);
+                    renderTrendCalendar(signals, potential, scanId);
+                    if (!data.events || !data.events.length) { body.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#64748b;padding:20px;">No events recorded yet.</td></tr>'; return; }
+                    body.innerHTML = data.events.map(e => {
+                    const p = e.payload || {};
+                    const d = p.details || {};
+                    const detail = `CE ${d.ce_close ?? '-'} / MA9 ${d.ce_ma9 ?? '-'} · PE ${d.pe_close ?? '-'} / MA9 ${d.pe_ma9 ?? '-'} · FUT ${d.futures_close ?? e.market_price ?? '-'} / MA9 ${d.futures_ma9 ?? '-'}`;
+                    const basket = p.basket || {};
+                    const signalLabel = e.signal_status === 'PAIRED_BULLISH_CROSS' ? 'NEW BULLISH MA9 ALIGNMENT' : e.signal_status === 'PAIRED_BEARISH_CROSS' ? 'NEW BEARISH MA9 ALIGNMENT' : e.signal_status === 'TREND_CONTINUES_BULLISH' ? 'TREND CONTINUES BULLISH' : e.signal_status === 'TREND_CONTINUES_BEARISH' ? 'TREND CONTINUES BEARISH' : e.signal_status === 'NO_DIRECTIONAL_MA9_ALIGNMENT' ? 'NO DIRECTIONAL MA9 ALIGNMENT' : e.signal_status === 'CONFLICTING_FUTURES_CONFIRMATION' ? 'FUTURES CONTEXT ONLY' : (e.signal_status || '-');
+                    const candleDate = String(e.candle_at || p.date || '').slice(0, 10);
+                    return `<tr data-candle-date="${/^\d{4}-\d{2}-\d{2}$/.test(candleDate) ? candleDate : ''}" data-scan-id="${e.scan_id || p.scan_id || ''}" data-event-type="${e.event_type || ''}" title="${detail}"><td>${e.candle_at ? new Date(e.candle_at).toLocaleString('en-IN') : (p.date || '-')}</td><td>${e.occurred_at ? new Date(e.occurred_at).toLocaleString('en-IN') : '-'}</td><td style="font-family:monospace">${e.scan_id || p.scan_id || '-'}</td><td>${e.sequence_no || '-'}</td><td><span class="badge badge-neutral">${e.event_type}</span></td><td>${e.trend || '-'}</td><td>${e.raw_trend || p.raw_trend || '-'}</td><td>${signalLabel}</td><td>${e.futures_confirmation || d.futures_confirmation || '-'}</td><td><details><summary>View</summary><span style="color:#94a3b8">${detail}</span><br>ATM ${e.atm_strike ?? p.atm_strike ?? '-'} · ${e.expiry || p.expiry || '-'}<br><b>${basket.label || 'Basket'}:</b> ${basket.action || 'Review strategy basket'} <button class="btn btn-secondary" style="padding:2px 7px;font-size:10px" onclick="switchTab('master-console')">VIEW BASKETS</button> <button class="btn btn-primary" style="padding:2px 7px;font-size:10px" onclick="openSignalSimulator(${Number(e.id)})">SIMULATE</button></details></td></tr>`;
+                    }).join('');
+                    const journalWrap = body.closest('.journal-table-wrap');
+                    if (journalWrap) journalWrap.scrollLeft = 0;
+                }).catch(err => console.error('Event journal error:', err));
+        }
+
+        function pollStrategyScans() {
+            fetch('/api/strategy/scans?limit=25').then(r => r.json()).then(data => {
+                const body = document.getElementById('strategyScanBody');
+                if (!body) return;
+                if (!data.scans || !data.scans.length) { body.innerHTML = '<tr><td colspan="10" style="text-align:center;color:#64748b;padding:20px;">No scans run yet.</td></tr>'; return; }
+                const latestQuality = data.scans[0].summary?.data_quality;
+                const qualityEl = document.getElementById('journalDataQuality');
+                if (qualityEl) qualityEl.textContent = data.scans[0].status === 'COMPLETED' ? `${latestQuality?.common_completed_records ?? data.scans[0].summary?.records ?? 0} completed · ${latestQuality?.dropped_for_date_mismatch ?? 0} mismatched` : data.scans[0].status;
+                body.innerHTML = data.scans.map(s => { const x=s.summary||{}; return `<tr><td style="font-family:monospace">${s.scan_id}</td><td>${s.created_at ? new Date(s.created_at).toLocaleString('en-IN') : '-'}</td><td><span class="badge ${s.status === 'COMPLETED' ? 'badge-bullish' : 'badge-bearish'}">${s.status}</span></td><td>${s.from_date||'-'} → ${s.to_date||'-'}</td><td>${x.records??'-'}</td><td style="color:#10b981">${x.BULLISH??0}</td><td style="color:#f87171">${x.BEARISH??0}</td><td>${x.NEUTRAL??0}</td><td>${x.CHANGED??0}</td><td>${x.message||'-'}</td></tr>`; }).join('');
+            }).catch(err => console.error('Scan history error:', err));
+        }
+
+        function runTwentyDayScan(button) {
+            if (button) { button.disabled = true; button.textContent = '⏳ SCANNING…'; }
+            fetch('/api/strategy/scan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({symbol:document.getElementById('journalSymbol')?.value || 'NATGASMINI', days:Number(document.getElementById('journalDays')?.value || 20), expiry:document.getElementById('journalExpiry')?.value || 'AUTO'})})
+                .then(r => r.json()).then(data => {
+                    if (data.status !== 'success') alert(data.message || 'Scan failed');
+                    else alert(`Scan saved: ${data.scan.records} records, ${data.scan.CHANGED} trend changes.`);
+                    pollStrategyEvents(); pollStrategyScans();
+                }).catch(err => alert('Scan error: ' + err.message))
+                .finally(() => { if (button) { button.disabled = false; button.textContent = '🔎 RUN SCAN'; } });
         }
 
         function updateMasterSummary(baskets) {
@@ -3097,7 +2680,7 @@
                     <div style="text-align: center; color: #64748b; padding: 100px 0;">
                         <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.3;">📋</div>
                         <div style="font-size: 18px; font-weight: 600;">System Ready</div>
-                        <p style="margin-top: 8px; opacity: 0.6;">Awaiting signal or manual basket creation...</p>
+                        <p style="margin-top: 8px; opacity: 0.6;">Awaiting a strategy signal or approved order intent...</p>
                     </div>`;
                 return;
             }
@@ -3132,7 +2715,7 @@
                             ${renderBasketActions(b)}
                         </div>
                     </div>
-                    
+
                     <!-- Legs Table -->
                     <div style="padding: 0 10px;">
                         <table style="font-size: 12px; margin: 0; background: transparent; border: none;">
@@ -3160,7 +2743,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     ${b.error_message ? `
                         <div style="padding: 10px 20px; background: rgba(239, 68, 68, 0.1); color: #fca5a5; font-size: 12px; border-top: 1px solid rgba(239, 68, 68, 0.2);">
                             ⚠️ ERROR: ${b.error_message}
@@ -3171,25 +2754,86 @@
         }
 
         function renderBasketActions(b) {
+            const simulator = `<button class="btn btn-secondary" style="padding: 4px 12px; font-size: 11px;" onclick="openSimulator('${b.basket_id}')">📊 SIMULATE</button>`;
             if (b.status === 'DRAFT') {
                 return `
+                    ${simulator}
                     <button class="btn btn-primary" style="padding: 4px 12px; font-size: 11px;" onclick="handleConsoleAction('${b.basket_id}', 'APPROVE')">APPROVE</button>
                     <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 11px;" onclick="handleConsoleAction('${b.basket_id}', 'CANCEL')">CANCEL</button>
                 `;
             }
             if (b.status === 'VALIDATED' || b.status === 'PENDING') {
-                return `<button class="btn btn-bullish" style="padding: 6px 16px; font-size: 13px;" onclick="handleConsoleAction('${b.basket_id}', 'EXECUTE')">EXECUTE</button>`;
+                return `${simulator}<button class="btn btn-bullish" style="padding: 6px 16px; font-size: 13px;" onclick="handleConsoleAction('${b.basket_id}', 'EXECUTE')">EXECUTE</button>`;
             }
             if (b.status === 'COMPLETED' || b.status === 'EXECUTED') {
-                return `<button class="btn btn-minimal" style="padding: 4px 12px; font-size: 11px; opacity: 0.5;" disabled>LOCKED</button>`;
+                return `${simulator}<button class="btn btn-minimal" style="padding: 4px 12px; font-size: 11px; opacity: 0.5;" disabled>LOCKED</button>`;
             }
             if (['FAILED', 'ERROR', 'REJECTED'].includes(b.status)) {
                 return `
+                    ${simulator}
                     <button class="btn btn-secondary" style="padding: 4px 12px; font-size: 11px;" onclick="handleConsoleAction('${b.basket_id}', 'RETRY')">RETRY / RESET</button>
                     <button class="btn btn-danger" style="padding: 4px 12px; font-size: 11px;" onclick="handleConsoleAction('${b.basket_id}', 'CANCEL')">DISMISS</button>
                 `;
             }
-            return '';
+            return simulator;
+        }
+
+        function closeSimulator() {
+            const modal = document.getElementById('simulatorModal');
+            if (modal) modal.remove();
+        }
+
+        function openSimulator(basketId) {
+            fetch('/api/orders/depth/' + encodeURIComponent(basketId))
+                .then(r => r.json())
+                .then(basket => {
+                    if (!basket || !basket.orders) throw new Error(basket.message || 'Basket unavailable');
+                    openSimulationModal({
+                        basketId, symbol: 'NATGASMINI', strategy: basket.strategy_name || 'BASKET',
+                        lotSize: 1250, dataQuality: 'MANUAL_ASSUMPTION',
+                        legs: basket.orders.map((o, i) => ({ ...o, seq:o.seq || i + 1,
+                            instrument: o.leg_type || (/FUT/i.test(o.symbol || '') ? 'FUT' : 'OPT') }))
+                    });
+                }).catch(err => alert('Simulator error: ' + err.message));
+        }
+
+        function simulationIso(d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16); }
+        function simulationNumber(value, fallback=0) { const x = Number(value); return Number.isFinite(x) ? x : fallback; }
+        function simulationMoney(value) { return '₹' + simulationNumber(value).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+        function openSimulationModal(plan) {
+            closeSimulator();
+            window.activeSimulationPlan = plan;
+            const now = new Date(), later = new Date(now.getTime() + 24 * 3600 * 1000);
+            const legs = (plan.legs || []).map((leg, i) => ({ ...leg, seq: leg.seq || i + 1 }));
+            const rows = legs.map(leg => {
+                const price = simulationNumber(leg.premium ?? leg.fill_price ?? leg.ltp, 0);
+                return `<tr><td>${leg.seq}</td><td>${leg.symbol || '-'}</td><td>${leg.side || leg.action || '-'}</td><td>${leg.instrument || 'OPT'} ${leg.strike || ''} ${leg.option_type || ''}</td><td><input class="sim-entry" data-key="${leg.seq}" type="number" min="0" step=".01" value="${price}"></td><td><input class="sim-exit" data-key="${leg.seq}" type="number" min="0" step=".01" value="${price}"></td><td><input class="sim-qty" data-key="${leg.seq}" type="number" min="1" step="1" value="${leg.qty || 1}"></td></tr>`;
+            }).join('');
+            document.body.insertAdjacentHTML('beforeend', `<div id="simulatorModal" style="position:fixed;inset:0;background:rgba(2,6,23,.88);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px"><div class="card" style="width:min(1180px,96vw);max-height:92vh;overflow:auto;border:1px solid rgba(59,130,246,.5)"><div style="display:flex;justify-content:space-between;gap:14px;align-items:start;margin-bottom:14px"><div><div class="card-title">📊 Strategy Basket Simulator</div><div style="font-size:12px;color:#94a3b8">${plan.strategy || 'Basket'} · ${plan.sourceEventId ? 'Historical confirmed signal' : plan.basketId || 'Active basket'} · simulations never place orders</div></div><button class="btn btn-secondary" onclick="closeSimulator()">CLOSE</button></div><div style="font-size:11px;color:${plan.dataQuality === 'HISTORICAL_CLOSE' ? '#10b981' : '#fbbf24'};margin-bottom:12px">DATA QUALITY: ${plan.dataQuality || 'MANUAL_ASSUMPTION'} · Confirm all editable prices before relying on this result.</div><div style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px;margin-bottom:10px"><label>ENTRY (IST)<input id="simEntryAt" class="input-minimal" type="datetime-local" value="${simulationIso(now)}"></label><label>EXIT (IST)<input id="simExitAt" class="input-minimal" type="datetime-local" value="${simulationIso(later)}"></label><label>QUANTITY MULTIPLIER<input id="simMultiplier" class="input-minimal" type="number" min=".01" step=".01" value="1"></label><label>LOT SIZE<input id="simLotSize" class="input-minimal" type="number" min="1" step="1" value="${plan.lotSize || 1250}"></label><label>UNDERLYING / ATM<input id="simUnderlying" class="input-minimal" type="number" min="0" step=".01" value="${plan.underlyingPrice || plan.atmStrike || ''}"></label><label>CAPITAL AVAILABLE<input id="simCapital" class="input-minimal" type="number" min="0" step="1" placeholder="Optional"></label><label>EXIT RULE<select id="simExitReason" class="input-minimal"><option value="CUSTOM_EXIT">Custom exit</option><option value="FIXED_HOLDING">Fixed holding period</option><option value="TARGET">Target reached</option><option value="STOP_LOSS">Stop loss</option><option value="OPPOSITE_CONFIRMED_TREND">Opposite confirmed trend</option><option value="EXPIRY">Expiry</option></select></label><label>MARGIN RATE %<input id="simMarginRate" class="input-minimal" type="number" min="0" step=".1" value="12"></label></div><details style="margin:10px 0"><summary style="cursor:pointer;color:#93c5fd">Costs and fill assumptions</summary><div style="display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:10px;margin-top:8px"><label>BROKERAGE / QTY<input id="simBrokerage" class="input-minimal" type="number" min="0" step=".01" value="0"></label><label>TAXES % OF TURNOVER<input id="simTax" class="input-minimal" type="number" min="0" step=".001" value="0"></label><label>SLIPPAGE % PER FILL<input id="simSlippage" class="input-minimal" type="number" min="0" step=".01" value="0"></label></div></details><div class="journal-table-wrap"><table class="journal-table"><thead><tr><th>#</th><th>CONTRACT</th><th>SIDE</th><th>TYPE</th><th>ENTRY</th><th>EXIT</th><th>QTY</th></tr></thead><tbody>${rows}</tbody></table></div><div style="display:flex;justify-content:flex-end;margin-top:16px"><button class="btn btn-primary" onclick="runBasketSimulation()">▶ RUN &amp; SAVE SIMULATION</button></div><div id="simulatorResult" style="margin-top:14px"></div></div></div>`);
+        }
+
+        function runBasketSimulation() {
+            const plan = window.activeSimulationPlan || {};
+            const entries = {}, exits = {}, quantities = {};
+            document.querySelectorAll('.sim-entry').forEach(el => entries[el.dataset.key] = el.value);
+            document.querySelectorAll('.sim-exit').forEach(el => exits[el.dataset.key] = el.value);
+            document.querySelectorAll('.sim-qty').forEach(el => quantities[el.dataset.key] = el.value);
+            const legs = (plan.legs || []).map((leg, i) => ({...leg, seq:leg.seq || i + 1, side:leg.side || leg.action || 'BUY'}));
+            fetch('/api/simulations', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({basket_id:plan.basketId, source_event_id:plan.sourceEventId, strategy:plan.strategy, symbol:plan.symbol || 'NATGASMINI', entry_at:document.getElementById('simEntryAt').value, exit_at:document.getElementById('simExitAt').value, quantity_multiplier:document.getElementById('simMultiplier').value, lot_size:document.getElementById('simLotSize').value, underlying_price:document.getElementById('simUnderlying').value, capital_available:document.getElementById('simCapital').value, exit_reason:document.getElementById('simExitReason').value, data_quality:plan.dataQuality || 'MANUAL_ASSUMPTION', legs, entry_prices:entries, exit_prices:exits, quantities, charges:{brokerage_per_quantity:document.getElementById('simBrokerage').value, tax_percent:document.getElementById('simTax').value, slippage_percent:document.getElementById('simSlippage').value, margin_rate:document.getElementById('simMarginRate').value}})}).then(r=>r.json()).then(data => {
+                const out = document.getElementById('simulatorResult'); if (!data.simulation) { out.innerHTML = `<div style="color:#f87171">${data.message || 'Simulation failed'}${data.errors ? '<br>' + data.errors.join('<br>') : ''}</div>`; return; }
+                const s = data.simulation, color = s.total_pnl >= 0 ? '#10b981' : '#f87171';
+                const warnings = (s.risk_warnings || []).map(x => `<li>${x}</li>`).join('');
+                const points = (s.payoff_profile || []).map(p => `<span style="display:inline-block;margin:2px 6px 2px 0;color:${p.pnl >= 0 ? '#10b981' : '#f87171'}">${p.underlying_price}: ${simulationMoney(p.pnl)}</span>`).join('');
+                out.innerHTML = `<div style="padding:14px;border:1px solid ${color}66;border-radius:8px;background:rgba(15,23,42,.7)"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><b>Saved simulation: ${s.simulation_id}</b><b style="font-size:20px;color:${color}">Net P&amp;L ${simulationMoney(s.total_pnl)}</b></div><div style="display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:8px;margin-top:12px;font-size:12px"><span>Gross: ${simulationMoney(s.gross_pnl)}</span><span>Charges: ${simulationMoney(s.total_charges)}</span><span>Est. margin: ${simulationMoney(s.estimated_margin)}</span><span>Return on capital: ${s.return_on_capital_pct ?? '-'}%</span><span>Max loss estimate: ${s.max_loss_estimate == null ? '-' : simulationMoney(s.max_loss_estimate)}</span><span>Max profit estimate: ${s.max_profit_estimate == null ? '-' : simulationMoney(s.max_profit_estimate)}</span><span>Break-evens: ${(s.break_evens || []).join(', ') || '-'}</span><span>${s.entry_day} → ${s.exit_day} · ${s.holding_hours}h</span></div>${s.capital_shortfall ? `<div style="color:#fbbf24;margin-top:8px">Capital shortfall estimate: ${simulationMoney(s.capital_shortfall)}</div>` : ''}${warnings ? `<ul style="color:#fbbf24;margin:8px 0">${warnings}</ul>` : ''}<details style="margin-top:8px"><summary>Expiry payoff range</summary><div style="margin-top:6px">${points || 'Provide underlying / ATM price to calculate payoff.'}</div></details></div>`;
+            }).catch(err => alert('Simulation error: ' + err.message));
+        }
+
+        function openSignalSimulator(eventId) {
+            fetch('/api/simulations/plan/' + encodeURIComponent(eventId)).then(r => r.json()).then(data => {
+                if (!data.recommendation) throw new Error(data.message || 'Signal plan unavailable');
+                openSimulationModal({basketId:null, sourceEventId:data.source_event.id, symbol:data.symbol, lotSize:data.lot_size, strategy:data.recommendation.strategy_label, underlyingPrice:data.recommendation.market_context?.current_price, atmStrike:data.source_event.atm_strike, dataQuality:'HISTORICAL_CLOSE', legs:data.recommendation.legs});
+            }).catch(err => alert('Simulator error: ' + err.message));
         }
 
         function handleConsoleAction(basket_id, action) {
@@ -3355,33 +2999,19 @@
 
             // [NEW] Check halt status for button disable
             const isHalted = data.emergency_controls && data.emergency_controls.is_halted;
-            const btnState = isHalted ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '';
-            const btnText = isHalted ? 'TRADING HALTED' : 'Confirm Execution';
 
             basketHtml += `
                     </tbody>
                 </table>
                 <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 15px;">
                     <button class="btn btn-secondary" onclick="rejectTrade('NATGASMINI')">Reject</button>
-                    <button class="btn btn-success" onclick="confirmTrade('NATGASMINI')" ${btnState}>${btnText}</button>
+                    <button class="btn btn-primary" onclick="switchTab('master-console')">Review Order Intent</button>
                 </div>
             `;
             card.innerHTML = basketHtml;
             container.appendChild(card);
         }
 
-        function confirmTrade(sym) {
-            fetch('/api/execute_trade', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ symbol: sym })
-            })
-                .then(r => r.json())
-                .then(data => {
-                    alert(data.message);
-                    updateDashboard();
-                });
-        }
 
         function rejectTrade(sym) {
             fetch('/api/reject_trade', {
@@ -3553,50 +3183,6 @@
         }
 
 
-        function updateProfile(data) {
-            const prof = data.user_profile;
-            if (!prof) return;
-
-            // Identity
-            if (document.getElementById('profName')) document.getElementById('profName').textContent = prof.identity.name;
-            if (document.getElementById('profRole')) document.getElementById('profRole').textContent = prof.identity.role;
-            if (document.getElementById('profLogin')) document.getElementById('profLogin').textContent = prof.identity.login_id;
-            if (document.getElementById('upEmail') && prof.identity.email) document.getElementById('upEmail').value = prof.identity.email;
-
-            // Strategy
-            if (document.getElementById('profStrategy')) document.getElementById('profStrategy').textContent = prof.strategy_lock.active_strategy;
-
-            // Email (if available in raw user data, but user_profile is sanitized. We might need a separate call or update state_manager to include email in user_profile)
-            // For now, we leave the email field empty or placeholder.
-
-            // Limits
-            if (prof.risk_limits) {
-                if (document.getElementById('profMaxFut')) document.getElementById('profMaxFut').textContent = prof.risk_limits.max_futures + " LOTS";
-                if (document.getElementById('profMaxAdj')) document.getElementById('profMaxAdj').textContent = prof.risk_limits.max_adjustments;
-                if (document.getElementById('profRiskStatus')) {
-                    const stat = document.getElementById('profRiskStatus');
-                    stat.textContent = prof.risk_limits.status;
-                    stat.style.color = prof.risk_limits.status === "COMPLIANT" ? "#10b981" : "#ef4444";
-                }
-            }
-
-            // Permissions
-            const tbody = document.getElementById('profPermBody');
-            if (tbody && prof.permissions) {
-                tbody.innerHTML = '';
-                for (const [action, status] of Object.entries(prof.permissions)) {
-                    const isAllowed = status === "ALLOWED";
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td style="color: #cbd5e1; font-weight: 500;">${action.replace(/_/g, ' ')}</td>
-                        <td><span class="badge badge-${isAllowed ? 'bullish' : 'neutral'}">${status}</span></td>
-                        <td style="font-size: 18px;">${isAllowed ? '✅' : '🚫'}</td>
-                    `;
-                    tbody.appendChild(tr);
-                }
-            }
-        }
-
         function changeUserPassword() {
             const current = document.getElementById('cpCurrent').value;
             const newVal = document.getElementById('cpNew').value;
@@ -3623,32 +3209,10 @@
                 });
         }
 
-        function updateUserEmail() {
-            const email = document.getElementById('upEmail').value;
-            if (!email) return;
-
-            fetch('/api/user/update_profile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email })
-            })
-                .then(r => r.json())
-                .then(data => alert(data.message));
-        }
 
 
         // --- ADMIN FUNCTIONS ---
-        function adminSetMode(mode) {
-            if (!confirm('Switch System Mode to ' + mode + '?')) return;
-            fetch('/api/admin/set_mode', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ mode: mode })
-            }).then(r => r.json()).then(d => {
-                alert("✅ Mode changed to: " + mode);
-                updateDashboard();
-            });
-        }
+
 
         // --- ALERT SYSTEM FUNCTIONS ---
         let alertPanelOpen = false;
@@ -3662,72 +3226,16 @@
             // For now, we keep badge until "Clear All" is clicked
         }
 
-        function adminSaveTelegram() {
-            const data = {
-                bot_token: document.getElementById('admTeleToken').value,
-                chat_id: document.getElementById('admTeleChatId').value
-            };
-            fetch('/api/admin/update_telegram', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(r => r.json()).then(d => {
-                alert(d.message);
-                updateDashboard();
-            });
-        }
 
-        // --- CHANNEL MANAGEMENT ---
-        function toggleChannel(channel) {
-            const isChecked = document.getElementById('chk' + channel.charAt(0).toUpperCase() + channel.slice(1) + (channel === 'popup' ? '' : '')).checked || document.getElementById('chk' + (channel === 'popup' ? 'UiPopup' : (channel === 'telegram' ? 'Telegram' : 'Sound'))).checked;
 
-            if (channel === 'popup') {
-                localStorage.setItem('ng_pref_popup', isChecked);
-            } else if (channel === 'sound') {
-                localStorage.setItem('ng_pref_sound', isChecked);
-                if (isChecked) playAlertSound(true); // Test sound
-            } else if (channel === 'telegram') {
-                // Server Side Toggle
-                fetch('/api/admin/toggle_telegram_active', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ active: isChecked })
-                }).then(r => r.json()).then(d => {
-                    alert(d.message);
-                });
-            }
-        }
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playAlertSound(isTest = false) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
 
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
 
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(isTest ? 880 : 440, audioCtx.currentTime); // A5 test, A4 alert
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.start();
-
-            // Beep pattern
-            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.5);
-
-            oscillator.stop(audioCtx.currentTime + 0.5);
-        }
 
         // Init Prefs
-        function initChannels() {
-            if (localStorage.getItem('ng_pref_popup') === 'false') document.getElementById('chkUiPopup').checked = false;
-            if (localStorage.getItem('ng_pref_sound') === 'true') document.getElementById('chkSound').checked = true;
-            // Telegram state is synced via pollStrategyEngine -> updateDashboard
-        }
+
 
         // Call init
-        document.addEventListener('DOMContentLoaded', initChannels);
 
         function updateAlerts(alerts) {
             if (!alerts) return;
@@ -3769,9 +3277,8 @@
             const criticalAlert = alerts.find(a => a.priority === 'CRITICAL');
 
             // Check UI Preference
-            const showPopup = document.getElementById('chkUiPopup').checked;
 
-            if (criticalAlert && showPopup) {
+            if (criticalAlert) {
                 banner.style.display = 'flex';
                 document.getElementById('bannerMessage').textContent = criticalAlert.message;
             } else {
@@ -3779,11 +3286,6 @@
             }
         }
 
-        function adminTestTelegram() {
-            fetch('/api/admin/test_telegram', { method: 'POST' })
-                .then(r => r.json())
-                .then(d => alert(d.message));
-        }
 
         function clearAlerts() {
             fetch('/api/alerts/clear', { method: 'POST' })
@@ -3860,6 +3362,111 @@
                 alertPanelOpen = false;
             }
         });
+
+        async function saveAdminConfig(values) {
+            const response = await fetch('/api/admin/update_config', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(values) });
+            const result = await response.json();
+            if (!response.ok || result.status !== 'success') throw new Error(result.message || 'Settings update failed');
+            return result.config;
+        }
+        async function setNewsRiskToggle(enabled) {
+            try { await saveAdminConfig({news_risk_enabled: !!enabled}); updateDashboard(); }
+            catch (error) { alert(error.message); const el=document.getElementById('chkNewsRisk'); if(el) el.checked=!enabled; }
+        }
+        async function setActiveSignalStrategy(strategy) {
+            try { await saveAdminConfig({active_strategy: strategy}); updateDashboard(); }
+            catch (error) { alert(error.message); }
+        }
+        async function loadMailjetSettings() {
+            try {
+                const response=await fetch('/api/admin/email-notifications'); if(!response.ok)return;
+                const v=await response.json();
+                document.getElementById('admMailjetEnabled').checked=!!v.enabled;
+                document.getElementById('admEmailProvider').value='brevo';
+                document.getElementById('admBrevoTransport').value=v.brevo_transport||'api';
+                document.getElementById('admBrevoSmtpHost').value=v.brevo_smtp_host||'smtp-relay.brevo.com';
+                document.getElementById('admBrevoSmtpPort').value=v.brevo_smtp_port||587;
+                document.getElementById('admBrevoSmtpLogin').value=v.brevo_smtp_login||'';
+                toggleBrevoTransport();
+                document.getElementById('admNotifyBullish').checked=v.notify_bullish!==false;
+                document.getElementById('admNotifyBearish').checked=v.notify_bearish!==false;
+                document.getElementById('admNotifyNeutral').checked=!!v.notify_neutral;
+                document.getElementById('admNotifyPotential').checked=v.notify_potential_trends!==false;
+                document.getElementById('admNotifyConfirmed').checked=v.notify_confirmed_trends!==false;
+                document.getElementById('admNotifyRecovery').checked=v.notify_recovery!==false;
+                document.getElementById('admNotifyWeakening').checked=v.notify_weakening!==false;
+                document.getElementById('admNotifyDataQuality').checked=v.notify_data_quality!==false;
+                document.getElementById('admNotifyRisk').checked=v.notify_risk!==false;
+                document.getElementById('admNotifyExpiry').checked=v.notify_expiry!==false;
+                document.getElementById('admEmailTiming').value=v.delivery_mode||'immediate';
+                document.getElementById('admEmailDelayHours').value=v.delay_hours||0;
+                document.getElementById('admEmailDelayMinutes').value=v.delay_minutes||0;
+                toggleEmailDelayFields();
+                document.getElementById('admMailjetRecipients').value=(v.recipients||[]).join(', ')||v.recipient||'';
+                document.getElementById('admMailjetFrom').value=v.from_email||'mcxalerts@webprobity.com';
+                document.getElementById('admEmailFromName').value=v.from_name||'NG Automation Bot';
+                document.getElementById('admBrevoKey').placeholder=v.brevo_api_key_set?'Saved Brevo key (blank keeps it)':'Brevo API key';
+                document.getElementById('admBrevoSmtpKey').placeholder=v.brevo_smtp_key_set?'Saved Brevo SMTP key (blank keeps it)':'Brevo SMTP key';
+                document.getElementById('admMailjetKey').placeholder=v.mailjet_api_key_set?'Saved Mailjet API key (blank keeps it)':'Mailjet API key';
+                document.getElementById('admMailjetSecret').placeholder=v.mailjet_secret_key_set?'Saved Mailjet secret (blank keeps it)':'Mailjet secret key';
+                loadEmailLogs();
+            } catch(e) { console.error('Could not load email notification settings:',e); }
+        }
+        function toggleEmailDelayFields() {
+            const delayed=document.getElementById('admEmailTiming').value==='custom_delay';
+            document.getElementById('admEmailDelayFields').style.display=delayed?'grid':'none';
+        }
+        function toggleBrevoTransport() {
+            const smtp=document.getElementById('admBrevoTransport').value==='smtp';
+            document.getElementById('admBrevoSmtpFields').style.display=smtp?'grid':'none';
+        }
+        async function adminSaveMailjet(silent=false) {
+            try {
+                const response=await fetch('/api/admin/email-notifications',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+                    enabled:document.getElementById('admMailjetEnabled').checked,notify_trends:true,
+                    notify_bullish:document.getElementById('admNotifyBullish').checked,
+                    notify_bearish:document.getElementById('admNotifyBearish').checked,
+                    notify_neutral:document.getElementById('admNotifyNeutral').checked,
+                    notify_potential_trends:document.getElementById('admNotifyPotential').checked,
+                    notify_confirmed_trends:document.getElementById('admNotifyConfirmed').checked,
+                    notify_recovery:document.getElementById('admNotifyRecovery').checked,
+                    notify_weakening:document.getElementById('admNotifyWeakening').checked,
+                    notify_data_quality:document.getElementById('admNotifyDataQuality').checked,
+                    notify_risk:document.getElementById('admNotifyRisk').checked,
+                    notify_expiry:document.getElementById('admNotifyExpiry').checked,
+                    delivery_mode:document.getElementById('admEmailTiming').value,
+                    delay_hours:document.getElementById('admEmailDelayHours').value,
+                    delay_minutes:document.getElementById('admEmailDelayMinutes').value,
+                    provider:document.getElementById('admEmailProvider').value,
+                    brevo_transport:document.getElementById('admBrevoTransport').value,
+                    brevo_smtp_host:document.getElementById('admBrevoSmtpHost').value,
+                    brevo_smtp_port:document.getElementById('admBrevoSmtpPort').value,
+                    brevo_smtp_login:document.getElementById('admBrevoSmtpLogin').value,
+                    recipients:document.getElementById('admMailjetRecipients').value,from_email:document.getElementById('admMailjetFrom').value,
+                    from_name:document.getElementById('admEmailFromName').value,
+                    brevo_api_key:document.getElementById('admBrevoKey').value,
+                    brevo_smtp_key:document.getElementById('admBrevoSmtpKey').value,
+                    mailjet_api_key:document.getElementById('admMailjetKey').value,
+                    mailjet_secret_key:document.getElementById('admMailjetSecret').value})});
+                const result=await response.json(); if(!response.ok)throw new Error(result.message||'Could not save email settings');
+                ['admBrevoKey','admBrevoSmtpKey','admMailjetKey','admMailjetSecret'].forEach(id=>document.getElementById(id).value=''); if(!silent) alert(result.message); await loadMailjetSettings();
+            } catch(e) { if(!silent) alert(e.message); throw e; }
+        }
+        async function adminTestMailjet() {
+            try { await adminSaveMailjet(true); const r=await fetch('/api/admin/email-notifications/test',{method:'POST'}); const d=await r.json(); if(!r.ok)throw new Error(d.message||'Email test failed'); alert(d.message); }
+            catch(e) { alert(e.message); }
+        }
+        async function loadEmailLogs() {
+            const status=document.getElementById('admEmailLogStatus'), body=document.getElementById('admEmailLogBody');
+            if(!status||!body)return;
+            try {
+                const r=await fetch('/api/admin/email-notifications/logs?limit=100'); const d=await r.json();
+                if(!r.ok)throw new Error(d.message||'Could not load email logs');
+                const logs=d.logs||[]; status.textContent=logs.length?`${logs.length} recent delivery attempts`:'No delivery attempts recorded.';
+                body.innerHTML=logs.length?`<table style="width:100%;border-collapse:collapse"><thead><tr><th align="left">Time (IST)</th><th align="left">Status</th><th align="left">Provider</th><th align="left">Recipients</th><th align="left">Subject</th><th align="left">Error</th></tr></thead><tbody>${logs.map(x=>`<tr><td>${new Date(x.sent_at).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})}</td><td style="color:${(x.status==='SENT'||x.status==='ACCEPTED')?'#10b981':x.status==='FAILED'?'#ef4444':'#fbbf24'}">${x.status}</td><td>${x.provider||''}</td><td>${(x.recipients||[]).join(', ')}</td><td>${x.subject||''}</td><td>${x.error||''}</td></tr>`).join('')}</tbody></table>`:'';
+            } catch(e) { status.textContent=e.message; }
+        }
+
         function adminUpdateConfig() {
             const data = {
                 max_futures_qty: parseInt(document.getElementById('admMaxFut').value),
@@ -3896,54 +3503,7 @@
         }
 
         // --- USER MANAGEMENT ---
-        function loadUserList() {
-            fetch('/api/users/list')
-                .then(r => r.json())
-                .then(data => {
-                    const tbody = document.getElementById('adminUserTable');
-                    tbody.innerHTML = '';
-                    data.users.forEach(u => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${u.name} <span style="font-size:10px; color:#64748b;">(${u.id})</span></td>
-                            <td><span class="badge badge-neutral">${u.role}</span></td>
-                            <td>${u.active ? '<span style="color:#10b981;">Active</span>' : '<span style="color:#ef4444;">Suspended</span>'}</td>
-                            <td style="font-family:monospace;">${u.last_login || '-'}</td>
-                            <td>
-                                ${u.role !== 'ADMIN' ? `<button class="btn btn-danger" style="padding: 2px 6px; font-size: 10px;" onclick="deleteUser('${u.id}')">Del</button>` : '-'}
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                });
-        }
 
-        function showAddUserModal() {
-            document.getElementById('addUserModal').style.display = 'flex';
-        }
-
-        function submitAddUser() {
-            const data = {
-                username: document.getElementById('newUsername').value,
-                password: document.getElementById('newPassword').value,
-                name: document.getElementById('newName').value,
-                role: document.getElementById('newRole').value
-            };
-
-            fetch('/api/users/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(r => r.json()).then(d => {
-                if (d.status === 'success') {
-                    alert('User Created');
-                    document.getElementById('addUserModal').style.display = 'none';
-                    loadUserList();
-                } else {
-                    alert('Error: ' + d.message);
-                }
-            });
-        }
 
         // --- AUDIT LOGS ---
         function exportLogs() {
@@ -3951,79 +3511,8 @@
             window.location.href = '/api/admin/export_logs';
         }
 
-        // --- HEADLESS LOGIN ---
-        async function checkCredentialStatus() {
-            try {
-                const resp = await fetch('/api/admin/credential_status');
-                const data = await resp.json();
+        // --- FYERS BROWSER OAUTH ---
 
-                const statusDiv = document.getElementById('credentialStatus');
-                const iconSpan = document.getElementById('credStatusIcon');
-                const textSpan = document.getElementById('credStatusText');
-
-                if (data.all_configured) {
-                    statusDiv.style.display = 'block';
-                    statusDiv.style.background = 'rgba(34, 197, 94, 0.1)';
-                    statusDiv.style.border = '1px solid rgba(34, 197, 94, 0.3)';
-                    iconSpan.textContent = '✅';
-
-                    let loginBadge = data.is_logged_in
-                        ? '<span class="badge badge-bullish" style="margin-left:8px;">LOGGED IN</span>'
-                        : '<span class="badge badge-bearish" style="margin-left:8px;">NOT LOGGED IN</span>';
-
-                    textSpan.innerHTML = 'Credentials Configured ' + loginBadge;
-                    textSpan.style.color = '#22c55e';
-                } else {
-                    statusDiv.style.display = 'block';
-                    statusDiv.style.background = 'rgba(251, 191, 36, 0.1)';
-                    statusDiv.style.border = '1px solid rgba(251, 191, 36, 0.3)';
-                    iconSpan.textContent = '⚠️';
-                    textSpan.textContent = 'Some Credentials Missing - Please Configure';
-                    textSpan.style.color = '#fbbf24';
-                }
-            } catch (err) {
-                console.error('Failed to check credential status:', err);
-            }
-        }
-
-        function saveCredentials() {
-            const appId = document.getElementById('credAppId').value;
-            const secretId = document.getElementById('credSecretId').value;
-            const fyersId = document.getElementById('credFyersId').value;
-            const pin = document.getElementById('credPin').value;
-            const totp = document.getElementById('credTotp').value;
-
-            if (!appId || !secretId || !fyersId || !pin || !totp) {
-                alert('Please fill all fields (App ID, Secret, Login ID, PIN, TOTP)');
-                return;
-            }
-
-            fetch('/api/admin/save_credentials', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    app_id: appId,
-                    secret_id: secretId,
-                    fyers_id: fyersId,
-                    pin: pin,
-                    totp_key: totp
-                })
-            }).then(r => r.json()).then(d => {
-                if (d.status === 'success') {
-                    alert('✅ Credentials Saved Securely!');
-                    // Clear form
-                    document.getElementById('credAppId').value = '';
-                    document.getElementById('credSecretId').value = '';
-                    document.getElementById('credFyersId').value = '';
-                    document.getElementById('credPin').value = '';
-                    document.getElementById('credTotp').value = '';
-                    // Refresh status
-                    checkCredentialStatus();
-                } else {
-                    alert('❌ Error: ' + d.message);
-                }
-            });
-        }
 
         function startBrowserLogin() {
             fetch('/api/admin/auth_url')
@@ -4050,6 +3539,43 @@
                 });
         }
 
+        async function checkFyersCredentialStatus() {
+            const el = document.getElementById('credentialStatus');
+            if (!el) return;
+            try {
+                const response = await fetch('/api/admin/credential_status');
+                const data = await response.json();
+                el.textContent = data.status === 'success' ? data.message : 'Could not read credential status.';
+                el.style.color = data.all_configured ? '#10b981' : '#fbbf24';
+            } catch (_) { el.textContent = 'Could not read credential status.'; }
+        }
+
+        async function saveFyersCredentials() {
+            const body = {
+                app_id: document.getElementById('credAppId').value.trim(),
+                secret_id: document.getElementById('credSecret').value,
+                fyers_id: document.getElementById('credFyersId').value.trim(),
+                pin: document.getElementById('credPin').value,
+                totp_key: document.getElementById('credTotp').value.trim()
+            };
+            try {
+                const response = await fetch('/api/admin/save_credentials', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Could not save credentials');
+                ['credAppId','credSecret','credFyersId','credPin','credTotp'].forEach(id => document.getElementById(id).value = '');
+                alert(result.message); checkFyersCredentialStatus();
+            } catch (error) { alert(error.message); }
+        }
+
+        async function triggerFyersAutoLogin() {
+            try {
+                const response = await fetch('/api/admin/test_login', {method:'POST'});
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Fyers login failed');
+                alert(result.message); checkFyersCredentialStatus();
+            } catch (error) { alert(error.message); }
+        }
+
         function updateClock() {
             const now = new Date();
             const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
@@ -4061,48 +3587,10 @@
 
         setInterval(updateClock, 1000);
 
-        function openCreateBasketModal() {
-            document.getElementById('createBasketModal').style.display = 'flex';
-        }
-
-        function closeCreateBasketModal() {
-            document.getElementById('createBasketModal').style.display = 'none';
-        }
-
-        function submitCreateBasket() {
-            const data = {
-                direction: document.getElementById('manualDirection').value,
-                basket_type: document.getElementById('manualType').value,
-                trigger_rule: document.getElementById('manualRule').value,
-                strategy_name: 'Manual'
-            };
-
-            fetch('/api/orders/intent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-                .then(r => r.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        closeCreateBasketModal();
-                        pollMasterConsole();
-                        switchTab('master-console');
-                    } else {
-                        alert("Error: " + res.message);
-                    }
-                });
-        }
         updateClock();
+        loadMailjetSettings();
+        checkFyersCredentialStatus();
 
-        function toggleMode() {
-            fetch('/api/toggle_autonomous', { method: 'POST' })
-                .then(r => r.json())
-                .then(data => {
-                    alert('✅ MODE SWITCHED: ' + (data.autonomous_mode ? 'AUTONOMOUS' : 'MANUAL'));
-                    updateDashboard();
-                });
-        }
 
         function toggleStatus() {
             fetch('/api/toggle_status', { method: 'POST' })
@@ -4118,30 +3606,6 @@
             window.location.href = '/logout';
         }
 
-        function triggerAutoLogin() {
-            const btn = event.target; // Simple capture, might need refinement if icon structure changes
-            const originalText = btn.textContent;
-            btn.textContent = "⏳ Logging in...";
-            btn.disabled = true;
-
-            fetch('/api/admin/test_login', { method: 'POST' })
-                .then(r => r.json())
-                .then(d => {
-                    if (d.status === 'success') {
-                        alert(d.message);
-                        checkCredentialStatus();
-                    } else {
-                        alert(d.message);
-                    }
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                })
-                .catch(e => {
-                    alert("Network Error");
-                    btn.textContent = originalText;
-                    btn.disabled = false;
-                });
-        }
 
         function triggerFyersLogout() {
             if (!confirm("Are you sure you want to logout from Fyers? This will clear local tokens.")) return;
@@ -4150,20 +3614,13 @@
                 .then(r => r.json())
                 .then(d => {
                     alert(d.message);
-                    checkCredentialStatus();
+                    syncBrokerStatus();
                 });
         }
 
         // Auto-update
         // Removed global updateDashboard interval to prevent flicker
         // Polling is now handled by individual setIntervals in the specific logic areas.
-
-        // Check credential status on page load
-        setTimeout(() => {
-            if (typeof checkCredentialStatus === 'function') {
-                checkCredentialStatus();
-            }
-        }, 500);
         // [NEW] Broker Status Sync Logic
         function updateBrokerStatus(status) {
             const pill = document.getElementById('brokerStatusPill');
@@ -4234,7 +3691,6 @@
                 await refreshData();
                 await loadLiveOrders();
                 await loadLivePositions();
-                await loadUserProfile();
                 console.log("✅ [DEBUG] Refresh sequence done");
             } catch (e) {
                 console.error("❌ [DEBUG] Refresh Error:", e);
@@ -4299,7 +3755,7 @@
                             Confidence: <span style="color: ${rp.confidence === 'HIGH' ? '#10b981' : '#fbbf24'}; font-weight: 700;">${rp.confidence || 'MEDIUM'}</span>
                         </div>
                     </div>
-                    
+
                     <!-- Primary Action -->
                     <div style="flex: 1; min-width: 200px;">
                         <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 8px;">
@@ -4312,7 +3768,7 @@
                             ${rp.primary_action_detail || ''}
                         </div>
                     </div>
-                    
+
                     <!-- Hedge Action -->
                     <div style="flex: 1; min-width: 180px;">
                         <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 8px;">
@@ -4325,7 +3781,7 @@
                             ${rp.hedge_detail || ''}
                         </div>
                     </div>
-                    
+
                     <!-- Iron Fly -->
                     <div style="flex: 1; min-width: 180px;">
                         <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 8px;">
@@ -4374,9 +3830,10 @@
                         <td style="padding: 8px 12px; color: #94a3b8; font-size: 11px; font-family: monospace;">${leg.trading_symbol || '-'}</td>
                         <td style="padding: 8px 12px; text-align: center;"><span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600;">${leg.instrument}</span></td>
                         <td style="padding: 8px 12px; text-align: center; font-weight: 700;"><span style="color: ${leg.action === 'BUY' ? '#10b981' : '#ef4444'};">${leg.action}</span></td>
-                        <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums;">${leg.strike || 'MKT'}</td>
+                        <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums;">${leg.instrument === 'FUT' ? '—' : (leg.strike || '—')}</td>
                         <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums; font-weight: 600;">${leg.qty}</td>
-                        <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums; color: #f8fafc;">₹${(leg.ltp || 0).toFixed(2)}</td>
+                        <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums; color: ${leg.ltp ? '#f8fafc' : '#fbbf24'};">${leg.ltp ? `₹${leg.ltp.toFixed(2)}` : 'PRICE REQUIRED'}</td>
+                        <td style="padding: 8px 12px; text-align: center;"><span style="background: rgba(96,165,250,.16); color:#93c5fd; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700;">${leg.order_type || 'LIMIT'}</span></td>
                         <td style="padding: 8px 12px; text-align: right; font-family: tabular-nums; color: #cbd5e1;">₹${(Math.abs(leg.value) || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })}</td>
                     </tr>`).join('');
 
@@ -4395,7 +3852,8 @@
                                     <th style="padding: 8px 12px; text-align: center;">Action</th>
                                     <th style="padding: 8px 12px; text-align: right;">Strike</th>
                                     <th style="padding: 8px 12px; text-align: right;">Qty</th>
-                                    <th style="padding: 8px 12px; text-align: right;">LTP</th>
+                                    <th style="padding: 8px 12px; text-align: right;">LIMIT PRICE</th>
+                                    <th style="padding: 8px 12px; text-align: center;">ORDER TYPE</th>
                                     <th style="padding: 8px 12px; text-align: right;">Value</th>
                                 </tr>
                             </thead>
@@ -4526,7 +3984,7 @@
 
         async function refreshData() {
             try {
-                const selectedSymbol = document.getElementById('instrumentSelector')?.value || 'NATGASMINI';
+                const selectedSymbol = 'NATGASMINI';
                 const resp = await fetch('/api/refresh', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -4732,98 +4190,13 @@
             }
         }
 
-        // Auto-load on page load DISABLED to save Fyers API quota.
-        // These are loaded when user clicks "Refresh Data".
         // loadLiveOrders();
         // loadLivePositions();
-        // loadUserProfile();
 
-        // ===== USER PROFILE =====
-        async function loadUserProfile() {
-            try {
-                const resp = await fetch('/api/profile');
-                const data = await resp.json();
 
-                if (data.success) {
-                    // Identity
-                    document.getElementById('profLoginId').innerText = data.identity.login_id;
-                    const sessEl = document.getElementById('profSession');
-                    sessEl.innerText = data.identity.session_status;
-                    sessEl.className = data.identity.session_status === 'ACTIVE' ? 'badge badge-bullish' : 'badge badge-bearish';
-
-                    // Lock
-                    document.getElementById('profStratName').innerText = data.lock.strategy;
-                    const lockEl = document.getElementById('profLockStatus');
-                    lockEl.innerText = data.lock.status === 'LOCKED' ? 'LOCKED BY EXECUTION' : 'UNLOCKED';
-                    lockEl.className = data.lock.status === 'LOCKED' ? 'badge badge-bearish' : 'badge badge-bullish';
-
-                    // Risk
-                    document.getElementById('profMaxFut').innerText = data.risk.max_futures + " LOTS";
-                    document.getElementById('profMaxAdj').innerText = data.risk.max_adjustments;
-                    document.getElementById('profRiskStatus').innerText = data.risk.status;
-                }
-            } catch (e) {
-                console.error('Error loading profile:', e);
-            }
-        }
 
     </script>
-    <!-- Modal: Create Manual Basket -->
-    <div id="createBasketModal" class="modal-backdrop" style="display: none;">
-        <div class="card"
-            style="width: 500px; max-width: 95%; border: 1px solid rgba(59, 130, 246, 0.4); background: #0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <div class="card-title" style="margin-bottom: 0;">🛠️ Create Manual Order Basket</div>
-                <button onclick="closeCreateBasketModal()"
-                    style="background: transparent; border: none; color: #64748b; font-size: 24px; cursor: pointer;">×</button>
-            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-                <div class="grid" style="grid-template-columns: 1fr 1fr;">
-                    <div>
-                        <label
-                            style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Direction</label>
-                        <select id="manualDirection" class="input-minimal" style="width: 100%; margin-top: 4px;">
-                            <option value="BULLISH">BULLISH</option>
-                            <option value="BEARISH">BEARISH</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Basket
-                            Type</label>
-                        <select id="manualType" class="input-minimal" style="width: 100%; margin-top: 4px;">
-                            <option value="ENTRY">ENTRY</option>
-                            <option value="ADJUSTMENT">ADJUSTMENT</option>
-                            <option value="EXIT">EXIT</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase;">Trigger
-                        Rule (Optional)</label>
-                    <input type="text" id="manualRule" class="input-minimal" placeholder="e.g. Manual Override"
-                        style="width: 100%; margin-top: 4px;">
-                </div>
-
-                <div
-                    style="padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.2);">
-                    <div style="font-size: 12px; font-weight: 600; color: #60a5fa; margin-bottom: 4px;">💡 Strategy
-                        Preview</div>
-                    <div style="font-size: 11px; color: #94a3b8; line-height: 1.4;">
-                        Creating a basket will use the current <b>ATM Strike</b> and <b>Expiry</b>.
-                        The engine will generate the necessary legs (Futures + Options) automatically.
-                    </div>
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
-                    <button class="btn btn-secondary" onclick="closeCreateBasketModal()">Cancel</button>
-                    <button class="btn btn-primary" onclick="submitCreateBasket()">Queue Draft Basket</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>

@@ -1,126 +1,296 @@
-"""
-Notification Service
-Handles Telegram alerts with HTML formatting, message categories,
-severity levels, and error retry logic.
-"""
+"""Provider adapters for admin-configured email notifications."""
+import json
+import os
+import re
+import smtplib
+import time
+from email.message import EmailMessage
 
 import requests
-import time
-from datetime import datetime
 import src.config as config
 
 
-# Message category emojis
-CATEGORY_ICONS = {
-    "TRADE": "📊",
-    "RISK": "🛡️",
-    "SYSTEM": "⚙️",
-    "AUTH": "🔐",
-    "ALERT": "🔔",
-    "ORDER": "📋",
-    "PNL": "💰",
-}
-
-# Severity prefixes
-SEVERITY_PREFIX = {
-    "INFO": "ℹ️",
-    "WARNING": "⚠️",
-    "CRITICAL": "🚨",
-    "SUCCESS": "✅",
-}
+_settings_dir = os.getenv("TRADING_DB_DIR") or ("/data" if os.path.isdir("/data") else os.getcwd())
+SETTINGS_FILE = os.path.join(_settings_dir, "email_notification_config.json")
+LEGACY_SETTINGS_FILE = os.path.join(os.getcwd(), "email_notification_config.json")
+DEFAULT_FROM_EMAIL = "mcxalerts@webprobity.com"
 
 
-def send_telegram_alert(message, category="SYSTEM", severity="INFO", silent=False, max_retries=2):
-    """
-    Sends a formatted Telegram alert using the Bot API.
-    Non-blocking: Catches exceptions to ensure trading flow isn't disrupted.
+def normalize_recipients(value):
+    """Accept a list or comma/semicolon/newline separated addresses."""
+    values = value if isinstance(value, (list, tuple, set)) else re.split(r"[,;\n]+", str(value or ""))
+    result, seen = [], set()
+    for item in values:
+        email = str(item or "").strip()
+        if not email or "@" not in email or len(email) > 254:
+            continue
+        key = email.lower()
+        if key not in seen:
+            seen.add(key)
+            result.append(email)
+    return result
 
-    Args:
-        message: Alert text content
-        category: TRADE, RISK, SYSTEM, AUTH, ALERT, ORDER, PNL
-        severity: INFO, WARNING, CRITICAL, SUCCESS
-        silent: If True, sends without notification sound (for low-priority)
-        max_retries: Number of retry attempts on failure
-    """
-    if not config.TELEGRAM_BOT_TOKEN or not config.TELEGRAM_CHAT_ID:
-        print("⚠️ Telegram credentials missing. Alert skipped.")
-        return False
 
-    # Build formatted message
-    icon = CATEGORY_ICONS.get(category, "📌")
-    sev_icon = SEVERITY_PREFIX.get(severity, "")
-    timestamp = datetime.now().strftime("%H:%M:%S")
-
-    formatted = (
-        f"{sev_icon} <b>{category}</b> {icon}\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"{message}\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"<i>🕐 {timestamp} IST</i>"
-    )
-
-    url = f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN}/sendMessage"
-
-    payload = {
-        "chat_id": config.TELEGRAM_CHAT_ID,
-        "text": formatted,
-        "parse_mode": "HTML",
-        "disable_notification": silent,
+def load_provider_settings():
+    """Load saved provider secrets, falling back to environment variables."""
+    saved = {}
+    for path in (SETTINGS_FILE, LEGACY_SETTINGS_FILE):
+        if path == SETTINGS_FILE and not os.path.exists(path):
+            continue
+        try:
+            with open(path, "r", encoding="utf-8") as settings_file:
+                saved = json.load(settings_file)
+            break
+        except (OSError, ValueError):
+            continue
+    transport = saved.get("brevo_transport", "api")
+    saved_smtp_login = saved.get("brevo_smtp_login") or os.getenv("BREVO_SMTP_LOGIN", "")
+    saved_smtp_key = saved.get("brevo_smtp_key") or os.getenv("BREVO_SMTP_KEY", "")
+    saved_api_key = saved.get("brevo_api_key") or os.getenv("BREVO_API_KEY", "")
+    # An SMTP credential must never be sent to the HTTP API. Prefer SMTP when
+    # SMTP credentials exist and no Brevo API key is configured.
+    if transport == "api" and saved_smtp_login and saved_smtp_key and not saved_api_key:
+        transport = "smtp"
+    return {
+        # Brevo is the active transactional provider. Mailjet fields remain
+        # readable only for backward-compatible migration of old settings.
+        "provider": "brevo",
+        "brevo_api_key": saved_api_key,
+        "brevo_transport": transport,
+        "brevo_smtp_host": saved.get("brevo_smtp_host") or os.getenv("BREVO_SMTP_HOST", "smtp-relay.brevo.com"),
+        "brevo_smtp_port": int(saved.get("brevo_smtp_port") or os.getenv("BREVO_SMTP_PORT", "587")),
+        "brevo_smtp_login": saved_smtp_login,
+        "brevo_smtp_key": saved_smtp_key,
+        "mailjet_api_key": saved.get("mailjet_api_key") or config.MAILJET_API_KEY or "",
+        "mailjet_secret_key": saved.get("mailjet_secret_key") or config.MAILJET_SECRET_KEY or "",
+        "from_email": saved.get("from_email") or config.MAILJET_FROM_EMAIL or DEFAULT_FROM_EMAIL,
+        "from_name": saved.get("from_name", "NG Automation Bot"),
+        "recipients": saved.get("recipients") or saved.get("notifications", {}).get("recipients", []),
+        "notifications": saved.get("notifications", {}),
     }
 
-    for attempt in range(1, max_retries + 1):
-        try:
-            response = requests.post(url, json=payload, timeout=5)
 
-            if response.status_code == 200:
-                print(f"✅ Telegram Alert Sent [{category}/{severity}]: {message[:40]}...")
+def save_provider_settings(settings):
+    """Persist provider credentials with restrictive permissions where supported."""
+    temp_file = SETTINGS_FILE + ".tmp"
+    with open(temp_file, "w", encoding="utf-8") as settings_file:
+        json.dump(settings, settings_file)
+    os.replace(temp_file, SETTINGS_FILE)
+    try:
+        os.chmod(SETTINGS_FILE, 0o600)
+    except OSError:
+        pass
+
+
+def provider_status(settings=None):
+    settings = settings or load_provider_settings()
+    provider = "brevo"
+    if provider == "brevo":
+        if settings.get("brevo_transport") == "smtp":
+            configured = bool(settings.get("brevo_smtp_login") and settings.get("brevo_smtp_key") and settings.get("from_email"))
+        else:
+            configured = bool(settings.get("brevo_api_key") and settings.get("from_email"))
+    else:
+        configured = bool(settings.get("mailjet_api_key") and settings.get("mailjet_secret_key") and settings.get("from_email"))
+    return {"configured": configured,
+            "brevo_api_key_set": bool(settings.get("brevo_api_key")),
+            "brevo_smtp_login": settings.get("brevo_smtp_login", ""),
+            "brevo_smtp_key_set": bool(settings.get("brevo_smtp_key")),
+            "brevo_transport": settings.get("brevo_transport", "api"),
+            "mailjet_api_key_set": bool(settings.get("mailjet_api_key")),
+            "mailjet_secret_key_set": bool(settings.get("mailjet_secret_key"))}
+
+
+def send_email_notification(subject, message, recipient, settings=None, alert_type=None):
+    """Send plain-text email through the selected Brevo or Mailjet API."""
+    settings = settings or load_provider_settings()
+    settings.pop("_last_error", None)
+    settings.pop("_last_status", None)
+    recipients = normalize_recipients(settings.get("recipients") or recipient)
+    provider = settings.get("provider", "mailjet")
+    status, error = "SKIPPED", None
+    if not recipients or not settings.get("from_email"):
+        settings["_last_error"] = "Missing recipient or sender address"
+        settings["_last_status"] = "SKIPPED"
+        _save_email_log(provider, subject, recipients, status, "Missing recipients or sender", alert_type)
+        return False
+    sender = {"email": settings["from_email"], "name": settings.get("from_name") or "NG Automation Bot"}
+    try:
+        if provider == "brevo":
+            if settings.get("brevo_transport") == "smtp":
+                if not (settings.get("brevo_smtp_login") and settings.get("brevo_smtp_key")):
+                    settings["_last_error"] = "Brevo SMTP login or SMTP key is not configured"
+                    settings["_last_status"] = "SKIPPED"
+                    _save_email_log(provider, subject, recipients, status, settings["_last_error"], alert_type)
+                    return False
+                email = EmailMessage()
+                email["From"] = f"{sender['name']} <{sender['email']}>"
+                email["To"] = ", ".join(recipients)
+                email["Subject"] = subject
+                email.set_content(message)
+                host = settings.get("brevo_smtp_host", "smtp-relay.brevo.com")
+                requested_port = int(settings.get("brevo_smtp_port", 587))
+                ports = [requested_port] + ([2525] if requested_port == 587 else [])
+                last_error = None
+                for port in ports:
+                    try:
+                        if port == 465:
+                            connection = smtplib.SMTP_SSL(host, port, timeout=15)
+                        else:
+                            connection = smtplib.SMTP(host, port, timeout=15)
+                        with connection as smtp:
+                            if port != 465:
+                                smtp.starttls()
+                            smtp.login(settings["brevo_smtp_login"], settings["brevo_smtp_key"])
+                            smtp.send_message(email)
+                        last_error = None
+                        break
+                    except (TimeoutError, OSError, smtplib.SMTPException) as exc:
+                        last_error = exc
+                        if port == ports[-1]:
+                            raise
+                if last_error:
+                    raise last_error
+                settings["_last_status"] = "ACCEPTED"
+                _save_email_log(provider, subject, recipients, "ACCEPTED", None, alert_type,
+                                {"recipient_count": len(recipients or []), "transport": "smtp", "port": port})
                 return True
-            elif response.status_code == 429:
-                # Rate limited - wait and retry
-                retry_after = response.json().get("parameters", {}).get("retry_after", 5)
-                print(f"⚠️ Telegram rate limited. Retrying in {retry_after}s...")
-                time.sleep(retry_after)
-                continue
-            else:
-                print(f"⚠️ Telegram alert failed (attempt {attempt}): {response.text}")
+            if not settings.get("brevo_api_key"):
+                settings["_last_error"] = "Brevo API key is not configured"
+                settings["_last_status"] = "SKIPPED"
+                _save_email_log(provider, subject, recipients, status, "Brevo API key is not configured", alert_type)
+                return False
+            response = requests.post(
+                "https://api.brevo.com/v3/smtp/email",
+                headers={"api-key": settings["brevo_api_key"], "accept": "application/json"},
+                json={"sender": sender, "to": [{"email": email} for email in recipients],
+                      "subject": subject, "textContent": message}, timeout=10)
+        else:
+            if not (settings.get("mailjet_api_key") and settings.get("mailjet_secret_key")):
+                settings["_last_error"] = "Mailjet API key or secret is not configured"
+                settings["_last_status"] = "SKIPPED"
+                _save_email_log(provider, subject, recipients, status, "Mailjet credentials are not configured", alert_type)
+                return False
+            response = requests.post(
+                "https://api.mailjet.com/v3.1/send",
+                auth=(settings["mailjet_api_key"], settings["mailjet_secret_key"]),
+                json={"Messages": [{"From": {"Email": sender["email"], "Name": sender["name"]},
+                                    "To": [{"Email": email} for email in recipients], "Subject": subject,
+                                    "TextPart": message}]}, timeout=10)
+        response.raise_for_status()
+        provider_result = {}
+        try:
+            provider_result = response.json() or {}
+        except (TypeError, ValueError):
+            provider_result = {}
+        settings["_last_status"] = "ACCEPTED"
+        _save_email_log(provider, subject, recipients, "ACCEPTED", None, alert_type,
+                        {"recipient_count": len(recipients or []), "provider_response": provider_result})
+        return True
+    except Exception as exc:
+        error = type(exc).__name__
+        response = getattr(exc, "response", None)
+        if response is not None:
+            detail = (getattr(response, "text", "") or "").replace("\n", " ").strip()
+            if detail:
+                error = f"{error}: {detail[:300]}"
+        settings["_last_error"] = error
+        settings["_last_status"] = "FAILED"
+        _save_email_log(provider, subject, recipients, "FAILED", error, alert_type)
+        print(f"{provider.title()} notification failed: {error}")
+        return False
 
-        except requests.exceptions.Timeout:
-            print(f"⚠️ Telegram timeout (attempt {attempt}/{max_retries})")
-        except requests.exceptions.ConnectionError:
-            print(f"⚠️ Telegram connection error (attempt {attempt}/{max_retries})")
-        except Exception as e:
-            print(f"⚠️ Telegram error (attempt {attempt}): {e}")
 
-        # Exponential backoff between retries
-        if attempt < max_retries:
-            time.sleep(2 ** attempt)
-
-    return False
+def _save_email_log(provider, subject, recipients, status, error=None, alert_type=None, metadata=None):
+    try:
+        from src.database import UnifiedOrderManager
+        UnifiedOrderManager.get_instance().save_email_notification_log(
+            provider, subject, recipients, status, error=error, alert_type=alert_type,
+            metadata=metadata or {"recipient_count": len(recipients or [])})
+    except Exception as exc:
+        print(f"Email notification log failed: {type(exc).__name__}")
 
 
-def send_trade_alert(action, symbol, qty, price=None, pnl=None):
-    """Convenience: Send a trade-specific alert."""
-    parts = [f"<b>{action}</b>: {symbol}"]
-    parts.append(f"Qty: <b>{qty}</b>")
-    if price:
-        parts.append(f"Price: ₹{price:,.2f}")
-    if pnl is not None:
-        emoji = "🟢" if pnl >= 0 else "🔴"
-        parts.append(f"PnL: {emoji} ₹{pnl:,.2f}")
-
-    return send_telegram_alert("\n".join(parts), category="TRADE", severity="INFO")
+def send_mailjet_notification(subject, message, recipient=None):
+    """Backward-compatible alias for the selected notification provider."""
+    return send_email_notification(subject, message, recipient)
 
 
-def send_risk_alert(status, message, severity="WARNING"):
-    """Convenience: Send a risk-specific alert."""
-    return send_telegram_alert(
-        f"<b>Status: {status}</b>\n{message}",
-        category="RISK",
-        severity=severity,
-        silent=(severity == "INFO")
-    )
+def process_due_trend_notification(state_manager):
+    """Deliver a queued trend event once its configured delay has elapsed."""
+    settings = state_manager.get_state().get("email_notification_config", {})
+    pending_key = next((key for key in ("pending_potential_event", "pending_confirmed_event", "pending_event")
+                        if settings.get(key)), None)
+    pending = settings.get(pending_key) if pending_key else None
+    if not pending:
+        return
+    if not settings.get("enabled"):
+        settings.pop(pending_key, None)
+        state_manager.update("email_notification_config", settings)
+        provider_settings = load_provider_settings()
+        provider_settings["notifications"] = settings
+        save_provider_settings(provider_settings)
+        return
+    if time.time() < float(pending.get("due_at", 0)):
+        return
+    provider_settings = load_provider_settings()
+    provider_settings["recipients"] = settings.get("recipients") or settings.get("recipient", "")
+    if send_email_notification(pending.get("subject", "NG trend update"),
+                               pending.get("message", ""), provider_settings["recipients"],
+                               settings=provider_settings, alert_type=pending.get("alert_type")):
+        settings[f"last_notified_{str(pending.get('kind', 'confirmed')).lower()}_trend"] = pending.get("trend")
+        settings.pop(pending_key, None)
+        state_manager.update("email_notification_config", settings)
+        provider_settings = load_provider_settings()
+        provider_settings["notifications"] = settings
+        save_provider_settings(provider_settings)
 
 
-def send_system_alert(message, severity="INFO"):
-    """Convenience: Send a system health alert."""
-    return send_telegram_alert(message, category="SYSTEM", severity=severity)
+def process_state_alert_notifications(state_manager):
+    """Email newly-created risk/expiry/system alerts once, with deduplication."""
+    settings = state_manager.get_state().get("email_notification_config", {})
+    if not (settings.get("enabled") and settings.get("recipient")):
+        return
+    alerts = list(reversed(state_manager.get_state().get("alerts", [])))
+    if not alerts:
+        return
+    last_id = int(settings.get("last_alert_notification_id", 0) or 0)
+    newest_id = max(int(a.get("id", 0) or 0) for a in alerts)
+    if not last_id:
+        settings["last_alert_notification_id"] = newest_id
+        state_manager.update("email_notification_config", settings)
+        provider_settings = load_provider_settings()
+        provider_settings["notifications"] = settings
+        save_provider_settings(provider_settings)
+        return
+    changed = False
+    for alert in alerts:
+        alert_id = int(alert.get("id", 0) or 0)
+        if alert_id <= last_id:
+            continue
+        category = str(alert.get("category") or "SYSTEM").upper()
+        if category in ("RISK", "EXIT", "SCALING", "ADJUSTMENT"):
+            enabled = settings.get("notify_risk", True)
+        elif category in ("EXPIRY", "ROLLOVER"):
+            enabled = settings.get("notify_expiry", True)
+        elif category in ("DATA", "DATA_QUALITY"):
+            enabled = settings.get("notify_data_quality", True)
+        else:
+            enabled = False
+        if enabled:
+            priority = str(alert.get("priority") or "INFO")
+            subject = f"NG {priority}: {category} alert"
+            message = f"{alert.get('message', '')}\nTime (IST): {alert.get('timestamp', '-') }\nPriority: {priority}"
+            provider_settings = load_provider_settings()
+            provider_settings["recipients"] = settings.get("recipients") or settings.get("recipient", "")
+            send_email_notification(subject, message, provider_settings["recipients"],
+                                    settings=provider_settings, alert_type=category)
+        last_id = max(last_id, alert_id)
+        changed = True
+    if changed:
+        settings["last_alert_notification_id"] = last_id
+        state_manager.update("email_notification_config", settings)
+        provider_settings = load_provider_settings()
+        provider_settings["notifications"] = settings
+        save_provider_settings(provider_settings)
+        return

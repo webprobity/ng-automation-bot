@@ -59,13 +59,24 @@ LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")  # Logging level
 # True: Bot only fetches data on user refresh (saves API quota)
 # False: Bot continuously polls every 15 seconds
 ON_DEMAND_MODE = os.getenv("ON_DEMAND_MODE", "true").lower() == "true"
+MOBILE_PUSH_POLL_SECONDS = max(60, int(os.getenv("MOBILE_PUSH_POLL_SECONDS", "300")))
 
 
 # ============================================================================
 # NOTIFICATIONS
 # ============================================================================
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+MAILJET_API_KEY = os.getenv("MAILJET_API_KEY")
+MAILJET_SECRET_KEY = os.getenv("MAILJET_SECRET_KEY")
+MAILJET_FROM_EMAIL = os.getenv("MAILJET_FROM_EMAIL")
+try:
+    import json
+    with open("mailjet_config.json", "r", encoding="utf-8") as _mailjet_file:
+        _mailjet_saved = json.load(_mailjet_file)
+    MAILJET_API_KEY = _mailjet_saved.get("api_key") or MAILJET_API_KEY
+    MAILJET_SECRET_KEY = _mailjet_saved.get("secret_key") or MAILJET_SECRET_KEY
+    MAILJET_FROM_EMAIL = _mailjet_saved.get("from_email") or MAILJET_FROM_EMAIL
+except (OSError, ValueError):
+    pass
 
 
 # ============================================================================
